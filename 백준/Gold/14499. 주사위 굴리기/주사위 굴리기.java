@@ -55,16 +55,17 @@ public class Main {
                 dice[6] = dice[4];
                 dice[4] = temp;
             } else if (d == 2) {
-                dice[3] = dice[1];
-                dice[1] = dice[6];
-                dice[6] = dice[5];
-                dice[5] = temp;
-
-            } else if (d == 3) {
                 dice[3] = dice[5];
                 dice[5] = dice[6];
                 dice[6] = dice[1];
                 dice[1] = temp;
+
+
+            } else if (d == 3) {
+                dice[3] = dice[1];
+                dice[1] = dice[6];
+                dice[6] = dice[5];
+                dice[5] = temp;
             }
 
             if (map[nx][ny] == 0) {
@@ -77,7 +78,5 @@ public class Main {
             x = nx;
             y = ny;
         }
-
-
     }
 }
