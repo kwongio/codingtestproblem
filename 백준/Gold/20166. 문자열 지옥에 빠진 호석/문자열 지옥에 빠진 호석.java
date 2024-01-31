@@ -11,6 +11,8 @@ public class Main {
     static int M;
     static int[] dx = {1, -1, 0, 0, -1, -1, 1, 1};
     static int[] dy = {0, 0, 1, -1, -1, 1, -1, 1};
+    static int maxLen = Integer.MIN_VALUE;
+
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,9 +28,12 @@ public class Main {
                 map[i][j] = charArray[j];
             }
         }
+        String[] answer = new String[K];
         for (int i = 0; i < K; i++) {
             String key = br.readLine();
             hashMap.put(key, 0);
+            answer[i] = key;
+            maxLen = Math.max(key.length(), maxLen);
         }
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
@@ -37,8 +42,8 @@ public class Main {
             }
         }
         StringBuilder sb = new StringBuilder();
-        for (String s : hashMap.keySet()) {
-            sb.append(hashMap.get(s) + "\n");
+        for (int i = 0; i < answer.length; i++) {
+            sb.append(hashMap.get(answer[i]) + "\n");
         }
         System.out.println(sb);
 
@@ -50,7 +55,7 @@ public class Main {
         q.add(new Point(x, y, 1, map[x][y] + ""));
         while (!q.isEmpty()) {
             Point point = q.poll();
-            if (point.length > 5) {
+            if (point.length > maxLen) {
                 continue;
             }
             if (hashMap.containsKey(point.str)) {
