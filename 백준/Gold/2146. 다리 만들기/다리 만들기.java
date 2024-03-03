@@ -56,12 +56,14 @@ public class Main {
             for (int i = 0; i < 4; i++) {
                 int nx = dx[i] + now[0];
                 int ny = dy[i] + now[1];
+
                 if (nx >= 0 && nx < N && ny >= 0 && ny < N && currentLand != map[nx][ny] && !visited[nx][ny]) {
                     visited[nx][ny] = true;
                     if (map[nx][ny] == 0) {
                         q.add(new int[]{nx, ny, now[2] + 1});
                     } else {
                         min = Math.min(min, now[2]);
+                        return;
                     }
                 }
             }
@@ -70,7 +72,7 @@ public class Main {
 
     private static void BFS(int x, int y) {
         ArrayDeque<int[]> q = new ArrayDeque<>();
-        q.add(new int[]{x, y});
+        q.offer(new int[]{x, y});
         map[x][y] = landNum;
         visited[x][y] = true;
         while (!q.isEmpty()) {
@@ -79,9 +81,9 @@ public class Main {
                 int nx = dx[i] + now[0];
                 int ny = dy[i] + now[1];
                 if (nx >= 0 && nx < N && ny >= 0 && ny < N && map[nx][ny] == 1 && !visited[nx][ny]) {
-                    map[nx][ny] = landNum;
                     visited[nx][ny] = true;
                     q.add(new int[]{nx, ny});
+                    map[nx][ny] = landNum;
                 }
             }
         }
