@@ -17,13 +17,15 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         map = new int[N][N];
-        visited = new boolean[N][N];
         for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
+
+
+        visited = new boolean[N][N];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 if (map[i][j] != 0 && !visited[i][j]) {
@@ -31,12 +33,7 @@ public class Main {
                 }
             }
         }
-//        for (int i = 0; i < N; i++) {
-//            for (int j = 0; j < N; j++) {
-//                System.out.print(map[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
+
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
@@ -51,7 +48,7 @@ public class Main {
 
     private static void make(int x, int y) {
         int currentLand = map[x][y];
-        Queue<int[]> q = new LinkedList<>();
+        ArrayDeque<int[]> q = new ArrayDeque<>();
         q.add(new int[]{x, y, 0});
         visited[x][y] = true;
         while (!q.isEmpty()) {
@@ -72,7 +69,7 @@ public class Main {
     }
 
     private static void BFS(int x, int y) {
-        Queue<int[]> q = new LinkedList<>();
+        ArrayDeque<int[]> q = new ArrayDeque<>();
         q.add(new int[]{x, y});
         map[x][y] = landNum;
         visited[x][y] = true;
