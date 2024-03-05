@@ -6,6 +6,7 @@ import java.util.*;
 public class Main {
     static int D, N;
     static long[] arr;
+    static int depth;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,35 +15,35 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         arr = new long[D + 1];
         st = new StringTokenizer(br.readLine());
+        arr[0] = Integer.MAX_VALUE;
         for (int i = 1; i <= D; i++) {
             arr[i] = Long.parseLong(st.nextToken());
+            arr[i] = Math.min(arr[i], arr[i - 1]);
         }
-        for (int i = 1; i < D; i++) {
-            if (arr[i] < arr[i + 1]) {
-                arr[i + 1] = arr[i];
-            }
-        }
-
+        depth = D + 1;
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             int pizza = Integer.parseInt(st.nextToken());
-            while (D >= 0 && pizza > arr[D--]) ;
+            search(pizza);
+
         }
-        System.out.println(D + 1);
+        System.out.println(depth);
     }
 
     private static void search(int target) {
         int start = 0;
-        int end = D - 1;
-        int mid = 0;
+        int end = depth - 1;
         while (start <= end) {
-            mid = start + (end - start) / 2;
+            int mid = start + (end - start) / 2;
             if (arr[mid] >= target) {
-                mid = end - 1;
-            } else if (arr[mid] < target) {
-                mid = start + 1;
+                depth = mid;
+                start = mid + 1;
+            } else {
+                end = mid - 1;
             }
         }
-        D = mid - 1;
+
     }
+
+
 }
