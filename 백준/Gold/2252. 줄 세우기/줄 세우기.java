@@ -1,46 +1,44 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
-import java.io.*;
 
 public class Main {
-
     static int N, M;
-
-    static int[] indegree;
-
+    static int[] inDegree;
     static List<Integer>[] list;
 
-    public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        M = sc.nextInt();
-        indegree = new int[N + 1];
-        list = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++) {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        inDegree = new int[N];
+        list = new ArrayList[N];
+        for (int i = 0; i < N; i++) {
             list[i] = new ArrayList<>();
         }
-
-
         for (int i = 0; i < M; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken()) - 1;
+            int b = Integer.parseInt(st.nextToken()) - 1;
             list[a].add(b);
-            indegree[b]++;
+            inDegree[b]++;
         }
-
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 1; i <= N; i++) {
-            if (indegree[i] == 0) {
-                q.offer(i);
+        Queue<Integer> q = new ArrayDeque<>();
+        for (int i = 0; i < N; i++) {
+            if (inDegree[i] == 0) {
+                q.add(i);
             }
         }
         while (!q.isEmpty()) {
             int now = q.poll();
-            System.out.print(now + " ");
-            for (int i : list[now]) {
-                indegree[i]--;
-                if (indegree[i] == 0) {
-                    q.offer(i);
+            System.out.print((now + 1) + " ");
+            for (Integer next : list[now]) {
+                inDegree[next]--;
+                if(inDegree[next] == 0){
+                    q.add(next);
                 }
             }
         }
