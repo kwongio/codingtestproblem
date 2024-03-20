@@ -29,10 +29,13 @@ class Main {
             list[a].add(new int[]{b, c});
             list[b].add(new int[]{a, c});
         }
+
         dijkstra();
-        for (int i = N; i > start ; i = path[i]) {
-            maxDistance(i , path[i]);
-        }
+//        for (int i = N; i > start ; i = path[i]) {
+//            maxDistance(i , path[i]);
+//        }
+        DFS(N);
+
         if (answer == Integer.MAX_VALUE) {
             System.out.println(-1);
             return;
@@ -41,7 +44,7 @@ class Main {
     }
 
     public static void DFS(int p) {
-        if (path[p] != start) {
+        if (path[p] != 0) {
             maxDistance(p, path[p]);
             DFS(path[p]);
         }
