@@ -10,21 +10,18 @@ public class Main {
 
         N = Integer.parseInt(br.readLine());
 
-        long[] arr = new long[N];
+        Stack<Long> stack = new Stack<>();
+        long answer = 0;
+
         for (int i = 0; i < N; i++) {
-            arr[i] = Long.parseLong(br.readLine());
+            long h = Long.parseLong(br.readLine());
+            while (!stack.isEmpty() && stack.peek() <= h) {
+                stack.pop();
+            }
+            answer += stack.size();
+            stack.push(h);
         }
 
-        long count = 0;
-        for (int i = 0; i < N - 1; i++) {
-            for (int j = i + 1; j < N; j++) {
-                if (arr[i] > arr[j]) {
-                    count++;
-                }else {
-                    break;
-                }
-            }
-        }
-        System.out.println(count);
+        System.out.println(answer);
     }
 }
