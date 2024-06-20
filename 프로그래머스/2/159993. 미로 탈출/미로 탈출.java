@@ -1,77 +1,55 @@
 import java.util.*;
 
-class Data{
-    int x,y; // 행, 열
-    int dis;
-    // boolean sw; // 레버를 당겼으면 true, 그렇지 않으면 false
-    public Data(int x, int y, int dis){
-        this.x=x;
-        this.y=y;
-        this.dis=dis;
-    }
-}
-
 class Solution {
-
-    int[] dx = {-1,0,1,0}, dy = {0,-1,0,1};
+    // 레버~시작점 거리와 레버~출구 거리의 합
     public int solution(String[] maps) {
-        int answer = 0;
-        int r = maps.length;
-        int c = maps[0].length();
-        char[][] map = new char[r][c];
-        int s_x = -1, s_y = -1;
-        int e_x = -1, e_y = -1;
-        int l_x = -1, l_y = -1;
-        for(int i=0;i<r;i++){
-            for(int j=0;j<c;j++){
-                map[i][j] = maps[i].charAt(j);
-                switch(map[i][j]){
-                    case 'S'->{
-                        s_x = i;s_y = j;
-                    }
-                    case 'E'->{
-                        e_x = i;e_y = j;
-                    }
-                    case 'L'->{
-                        l_x = i;l_y = j;
-                    }
-                    default->{
 
+
+        int R = maps.length;
+        int C = maps[0].length();
+        int[][] time = new int[R][C];
+        Queue<Integer> q = new ArrayDeque<>();
+
+        for(int r=0; r<R; r++){
+            for(int c=0; c<C; c++){
+                if(maps[r].charAt(c)=='L'){
+                    q.add(r);
+                    q.add(c);
+                }
+                else{
+                    time[r][c] = Integer.MAX_VALUE;
+                }
+            }
+        }
+
+        int toStart = -1;
+        int toEnd = -1;
+
+        int[][] dir = new int[][]{{-1,0},{1,0},{0,-1},{0,1}};
+        while(toStart==-1 || toEnd==-1){
+            if(q.size()==0) return -1;
+            int r = q.poll();
+            int c = q.poll();
+            int t = time[r][c]+1;
+            for(int i=0; i<4; i++){
+                int nextR = r+dir[i][0];
+                int nextC = c+dir[i][1];
+                if(nextR>=0 && nextR<R && nextC>=0 && nextC<C){
+                    if(maps[nextR].charAt(nextC)!='X' && time[nextR][nextC]>t){
+                        time[nextR][nextC] = t;
+                        q.add(nextR);
+                        q.add(nextC);
+                        if(maps[nextR].charAt(nextC)=='S' && toStart==-1){
+                            toStart = t;
+                        }
+                        if(maps[nextR].charAt(nextC)=='E' && toEnd==-1){
+                            toEnd = t;
+                        }
                     }
                 }
             }
         }
 
-        int a = bfs(s_x,s_y,'L',map);
-        if(a==-1) return -1;
-        int b = bfs(l_x,l_y,'E',map);
-        if(b==-1) return -1;
-
-        return a+b;
-    }
-
-    public int bfs(int x, int y, char des, char[][] map){
-        LinkedList<Data> queue = new LinkedList<>();
-        int r = map.length;
-        int c = map[0].length;
-        boolean[][] visited = new boolean[r][c];
-        queue.offer(new Data(x,y,0));
-        visited[x][y] = true;
-        while(!queue.isEmpty()){
-            Data data = queue.poll();
-            if(map[data.x][data.y]==des){
-                return data.dis;
-            }
-            for(int i=0;i<4;i++){
-                int nx = data.x+dx[i];
-                int ny = data.y+dy[i];
-                if(0<=nx && nx<r && 0<=ny && ny<c && !visited[nx][ny] && map[nx][ny]!='X'){
-                    queue.offer(new Data(nx,ny,data.dis+1));
-                    visited[nx][ny] = true;
-                }
-            }
-        }
-
-        return -1;
+        return toStart + toEnd;
     }
 }
