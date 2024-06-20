@@ -1,77 +1,73 @@
 import java.util.*;
+
 class Solution {
-    static int second = 0;
-    static int a;
-    static int b;
-    static int[] dx = {-1, 0 ,1 ,0};
-    static int[] dy = {0, 1, 0 , -1};
-    static int[][] map;
-    static int N;
-    static int M;
-    static int answer = 0;
-    static boolean[][] visited;
+
+
+    int[] dx = {1,-1,0,0};
+    int[] dy = {0,0,1,-1};
+    int lx;
+    int ly;
+    int sx;
+    int sy;
+    int ex;
+    int ey;
+    int time = 0;
+    int N;
+    int M;
+    char[][] miro;
+    boolean[][][] visited;
+    // x위치 y위치 o열린지 d거리   
+    PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[3] == o2[3] ? Integer.compare(o1[2], o2[2]) : Integer.compare(o1[3], o2[3]));
     public int solution(String[] maps) {
         N = maps.length;
         M = maps[0].length();
-      
-        map = new int[N][M];
+        int answer = 0;
+        visited = new boolean[N][M][2];
+        miro = new char[maps.length][maps[0].length()];
+        for(int i = 0; i < maps.length; i++){
+            miro[i] = maps[i].toCharArray();
+        }
         
-        visited = new boolean[N][M];
-        for(int i = 0; i < N; i++){
-            char[] c = maps[i].toCharArray();
-            for(int j = 0; j < c.length; j++){
-                if(c[j] == 'E'){ // 끝
-                    map[i][j] = 3;
-                }
-                if(c[j] == 'O'){ // 통로
-                    map[i][j] = 0;
-                }
-                if(c[j] == 'X'){ // 벽
-                   map[i][j] = 1;
-                }
-                
-                if(c[j] == 'L'){ // 레버
-                  map[i][j] = 2;
-                }
-                if(c[j] == 'S'){ // 시작점
-                    a = i;
-                    b = j;
+        for(int i =0 ; i < miro.length; i++){
+            for(int j = 0; j < miro[i].length; j++){
+                if(miro[i][j] == 'S'){
+                    sx = i;
+                    sy = j;
+                }else if(miro[i][j] == 'L'){
+                    lx = i;
+                    ly = j;                    
+                }else if(miro[i][j] == 'E'){
+                    ex = i;
+                    ey = j;                    
                 }
             }
         }
-       int temp1=BFS(a,b,2);
-       int temp2=BFS(a,b,3);
-        if(temp1 == -1  || temp2 == -1){
-            return -1;
-        }
-
-        
-        
        
-        return temp1 + temp2;
+        return bfs(sx, sy);
     }
-    public static int BFS(int x, int y, int dest){
-         visited = new boolean[N][M];
-        Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{x, y, 0});
-        
-        visited[x][y] = true;
-        while(!q.isEmpty()){
-            int[] now = q.poll();
+                                                  
+    public int bfs(int x, int y){
+        pq.offer(new int[]{x,y,0,1});
+        while(!pq.isEmpty()){
+            int[] now = pq.poll();
+            if(visited[now[0]][now[1]][now[2]]){
+                continue;
+            }
+            visited[now[0]][now[1]][now[2]] = true;
             for(int i = 0; i < 4; i++){
-                int nx = dx[i] + now[0];
-                int ny = dy[i] + now[1];
-                if(nx >= 0 && nx < N && ny >= 0 && ny < M && map[nx][ny] != 1 && !visited[nx][ny]){
-                    if(map[nx][ny] == dest){
-                        a = nx;
-                        b = ny;
-                        return now[2] + 1;
-                    }
-                    visited[nx][ny] = true;
-                    q.add(new int[]{nx,ny,now[2] + 1});
+                int nx = now[0] + dx[i];
+                int ny = now[1] + dy[i];
+                if(nx >= 0 && nx < N && ny >=0 && ny < M && miro[nx][ny] != 'X'){
+                   if(lx == nx && ly == ny){
+                       pq.offer(new int[]{nx, ny, 1, now[3] + 1});
+                   }else if(ex == nx && ey == ny && now[2] == 1){
+                        return now[3];
+                   }else{
+                       pq.offer(new int[]{nx,ny,now[2],now[3] + 1});
+                   }
                 }
             }
-        }     
+        }
         return -1;
-    }  
+    }
 }
