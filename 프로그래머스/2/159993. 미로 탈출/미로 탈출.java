@@ -1,73 +1,77 @@
 import java.util.*;
 
+class Data{
+    int x,y; // 행, 열
+    int dis;
+    // boolean sw; // 레버를 당겼으면 true, 그렇지 않으면 false
+    public Data(int x, int y, int dis){
+        this.x=x;
+        this.y=y;
+        this.dis=dis;
+    }
+}
+
 class Solution {
 
-
-    int[] dx = {1,-1,0,0};
-    int[] dy = {0,0,1,-1};
-    int lx;
-    int ly;
-    int sx;
-    int sy;
-    int ex;
-    int ey;
-    int time = 0;
-    int N;
-    int M;
-    char[][] miro;
-    boolean[][][] visited;
-    // x위치 y위치 o열린지 d거리   
-    PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[3] == o2[3] ? Integer.compare(o1[2], o2[2]) : Integer.compare(o1[3], o2[3]));
+    int[] dx = {-1,0,1,0}, dy = {0,-1,0,1};
     public int solution(String[] maps) {
-        N = maps.length;
-        M = maps[0].length();
         int answer = 0;
-        visited = new boolean[N][M][2];
-        miro = new char[maps.length][maps[0].length()];
-        for(int i = 0; i < maps.length; i++){
-            miro[i] = maps[i].toCharArray();
-        }
-        
-        for(int i =0 ; i < miro.length; i++){
-            for(int j = 0; j < miro[i].length; j++){
-                if(miro[i][j] == 'S'){
-                    sx = i;
-                    sy = j;
-                }else if(miro[i][j] == 'L'){
-                    lx = i;
-                    ly = j;                    
-                }else if(miro[i][j] == 'E'){
-                    ex = i;
-                    ey = j;                    
+        int r = maps.length;
+        int c = maps[0].length();
+        char[][] map = new char[r][c];
+        int s_x = -1, s_y = -1;
+        int e_x = -1, e_y = -1;
+        int l_x = -1, l_y = -1;
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                map[i][j] = maps[i].charAt(j);
+                switch(map[i][j]){
+                    case 'S'->{
+                        s_x = i;s_y = j;
+                    }
+                    case 'E'->{
+                        e_x = i;e_y = j;
+                    }
+                    case 'L'->{
+                        l_x = i;l_y = j;
+                    }
+                    default->{
+
+                    }
                 }
             }
         }
-       
-        return bfs(sx, sy);
+
+        int a = bfs(s_x,s_y,'L',map);
+        if(a==-1) return -1;
+        int b = bfs(l_x,l_y,'E',map);
+        if(b==-1) return -1;
+
+        return a+b;
     }
-                                                  
-    public int bfs(int x, int y){
-        pq.offer(new int[]{x,y,0,1});
-        while(!pq.isEmpty()){
-            int[] now = pq.poll();
-            if(visited[now[0]][now[1]][now[2]]){
-                continue;
+
+    public int bfs(int x, int y, char des, char[][] map){
+        LinkedList<Data> queue = new LinkedList<>();
+        int r = map.length;
+        int c = map[0].length;
+        boolean[][] visited = new boolean[r][c];
+        queue.offer(new Data(x,y,0));
+        visited[x][y] = true;
+        while(!queue.isEmpty()){
+            Data data = queue.poll();
+            if(map[data.x][data.y]==des){
+                return data.dis;
             }
-            visited[now[0]][now[1]][now[2]] = true;
-            for(int i = 0; i < 4; i++){
-                int nx = now[0] + dx[i];
-                int ny = now[1] + dy[i];
-                if(nx >= 0 && nx < N && ny >=0 && ny < M && miro[nx][ny] != 'X'){
-                   if(lx == nx && ly == ny){
-                       pq.offer(new int[]{nx, ny, 1, now[3] + 1});
-                   }else if(ex == nx && ey == ny && now[2] == 1){
-                        return now[3];
-                   }else{
-                       pq.offer(new int[]{nx,ny,now[2],now[3] + 1});
-                   }
+            for(int i=0;i<4;i++){
+                int nx = data.x+dx[i];
+                int ny = data.y+dy[i];
+                if(0<=nx && nx<r && 0<=ny && ny<c && !visited[nx][ny] && map[nx][ny]!='X'){
+                    queue.offer(new Data(nx,ny,data.dis+1));
+                    visited[nx][ny] = true;
                 }
             }
         }
+
         return -1;
     }
 }
