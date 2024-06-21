@@ -7,7 +7,6 @@ public class Main {
     static int max = Integer.MAX_VALUE;
     static int N = 10;
     static int[][] paper = new int[10][10];
-    static boolean[][] visit = new boolean[10][10];
     static int[] colorPaper = new int[]{1, 2, 3, 4, 5};
     static int[] colorPaperCount = new int[]{5, 5, 5, 5, 5};
 
@@ -39,10 +38,10 @@ public class Main {
             return;
         }
 
-        if (paper[x][y] == 1 && !visit[x][y]) {
+        if (paper[x][y] == 1) {
             for (int i = 4; i >= 0; i--) {
-                if (!visit[x][y] && check(x, y, colorPaper[i]) && colorPaperCount[i] > 0) {
-                    attach(x, y, colorPaper[i]);
+                if ( check(x, y, colorPaper[i]) && colorPaperCount[i] > 0) {
+                    swap(x, y, colorPaper[i]);
                     DFS(x, y + colorPaper[i], count + 1);
                     dettach(x, y, colorPaper[i]);
                 }
@@ -52,10 +51,10 @@ public class Main {
         }
     }
 
-    private static void attach(int x, int y, int size) {
+    private static void swap(int x, int y, int size) {
         for (int i = x; i < x + size; i++) {
             for (int j = y; j < y + size; j++) {
-                visit[i][j] = true;
+                paper[i][j] = 2;
             }
         }
         colorPaperCount[size - 1]--;
@@ -64,7 +63,7 @@ public class Main {
     private static void dettach(int x, int y, int size) {
         for (int i = x; i < x + size; i++) {
             for (int j = y; j < y + size; j++) {
-                visit[i][j] = false;
+                paper[i][j] = 1;
             }
         }
         colorPaperCount[size - 1]++;
@@ -75,7 +74,7 @@ public class Main {
         if (x + size > N || y + size > N) return false;
         for (int i = x; i < x + size; i++) {
             for (int j = y; j < y + size; j++) {
-                if (paper[i][j] != 1 || visit[i][j]) {
+                if (paper[i][j] != 1) {
                     return false;
                 }
             }
