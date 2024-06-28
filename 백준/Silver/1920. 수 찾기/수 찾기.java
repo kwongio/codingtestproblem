@@ -1,33 +1,27 @@
-import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
-public class Main {
+class Main {
+    static int N;
+    static int M;
 
-    static int[]arr1;
-    static int[]arr2;
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-
+    static HashSet<Integer> set = new HashSet<>();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        arr1 = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            arr1[i] = Integer.parseInt(st.nextToken());
-        }
-
-        int M = Integer.parseInt(br.readLine());
-        arr2 = new int[M];
+        N = Integer.parseInt(st.nextToken());
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < M; i++) {
-            arr2[i] = Integer.parseInt(st.nextToken());
+
+        for(int i = 0 ; i < N; i++){
+            set.add(Integer.parseInt(st.nextToken()));
         }
-        Arrays.sort(arr1);
-        for (int i = 0; i < M; i++) {
-            if (Arrays.binarySearch(arr1, arr2[i]) >= 0) {
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0 ; i < N; i++){
+            if (set.contains(Integer.parseInt(st.nextToken()))) {
                 System.out.println(1);
             }else{
                 System.out.println(0);
