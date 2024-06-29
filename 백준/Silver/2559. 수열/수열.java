@@ -14,19 +14,24 @@ class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
-        preSum = new int[N + 1];
-        arr = new int[N + 1];
+        arr = new int[N];
         st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= N; i++) {
+        for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
-            preSum[i] = preSum[i - 1] + arr[i];
+        }
+        int s = 0;
+        int e = K;
+        int score = 0;
+        for (int i = 0; i < e; i++) {
+            score += arr[i];
         }
 
-        int max = Integer.MIN_VALUE;
-        for (int i = K; i <= N; i++) {
-            max = Math.max(preSum[i] - preSum[i - K], max);
+        int max = score;
+        while (e < N) {
+            score -= arr[s++];
+            score += arr[e++];
+            max = Math.max(max, score);
         }
         System.out.println(max);
-
     }
 }
