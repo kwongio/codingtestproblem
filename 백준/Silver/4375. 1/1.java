@@ -15,11 +15,10 @@ public class Main {
                 if (num % N == 0) {
                     System.out.println(count);
                     break;
-                } else {
-                    num = num * 10 + 1;
-                    num %= N;
-                    count++;
                 }
+                num = num * 10 + 1;
+                num %= N;
+                count++;
             }
         }
     }
