@@ -17,34 +17,24 @@ class Main {
             arr[i] = Integer.parseInt(br.readLine());
         }
 
-        DFS(0, 0 );
+        DFS(0, 0);
     }
 
     private static void DFS(int depth, int start) {
         if (depth == 7) {
-            int sum  = 0;
-            for (int i = 0; i < 7; i++) {
-                sum += arr[select[i]];
-
-            }
-            if(sum ==  100){
-                PriorityQueue<Integer> q = new PriorityQueue<>();
+            if (Arrays.stream(select).sum() == 100) {
+                Arrays.sort(select);
                 for (int i = 0; i < 7; i++) {
-
-                    q.add(arr[select[i]]);
-                }
-                while (!q.isEmpty()) {
-                    System.out.println(q.poll());
+                    System.out.println(select[i]);
                 }
                 System.exit(0);
-
             }
             return;
         }
         for (int i = start; i < 9; i++) {
             if (!visit[i]) {
                 visit[i] = true;
-                select[depth] = i;
+                select[depth] = arr[i];
                 DFS(depth + 1, i + 1);
                 visit[i] = false;
             }
