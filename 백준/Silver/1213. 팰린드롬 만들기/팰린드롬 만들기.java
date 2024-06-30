@@ -12,12 +12,12 @@ public class Main {
             cnt[arr[i] - 'A']++;
         }
         int oddCnt = 0;
-        int oddIdx = 0;
-        String result = "";
+        int mid = 0;
+        StringBuilder result = new StringBuilder();
         for (int i = 25; i >= 0; i--) {
             if (cnt[i] % 2 == 1) {
                 oddCnt++;
-                oddIdx = i;
+                mid = i;
                 cnt[i]--;
             }
             if (oddCnt == 2) {
@@ -25,18 +25,12 @@ public class Main {
                 System.exit(0);
             }
             for (int j = 0; j < cnt[i] / 2; j++) {
-                result += (char) (i + 'A');
-                result = (char) (i + 'A') + result;
+                result.append((char) (i + 'A'));
+                result.insert(0, (char) (i + 'A'));
             }
         }
-        if (oddCnt == 1) {
-
-            String substring1 = result.substring(0, result.length() / 2);
-            String substring = result.substring(result.length() / 2);
-            result = substring1;
-            result += (char) (oddIdx + 'A');
-            result += substring;
-        }
+        if (oddCnt == 1)
+            result.insert(result.length() / 2, (char) (mid + 'A'));
         System.out.println(result);
     }
 }
