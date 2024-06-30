@@ -16,8 +16,7 @@ public class Main {
                     System.out.println(count);
                     break;
                 }
-                num = num * 10 + 1;
-                num %= N;
+                num = (num * 10 + 1) % N;
                 count++;
             }
         }
