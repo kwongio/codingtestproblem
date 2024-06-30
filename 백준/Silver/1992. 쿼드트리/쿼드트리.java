@@ -1,63 +1,51 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-
+    static int N;
     static StringBuilder sb = new StringBuilder();
-    static int[][] arr;
-    static int result = 0;
-    static int whiteCount = 0;
-    static int blueCount = 0;
-    static int BLUE = 1;
-    static int WHITE = 0;
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
+    static int[][] board;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        arr = new int[N][N];
+        N = Integer.parseInt(br.readLine());
+        board = new int[N][N];
         for (int i = 0; i < N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            String[] str = st.nextToken().split("");
-            for (int j = 0; j < str.length; j++) {
-                arr[i][j] = Integer.parseInt(str[j]);
+            String[] v = br.readLine().split("");
+            for (int j = 0; j < N; j++) {
+                board[i][j] = Integer.parseInt(v[j]);
             }
         }
-        quadTree(0, 0, N);
+        DFS(0, 0, N);
         System.out.println(sb);
-
     }
 
-    private static void quadTree(int x, int y, int size) {
 
-        if (check(x, y, size)) {
-            if (arr[x][y] == 0) {
-                sb.append(0);
-            }else{
-                sb.append(1);
+
+    private static void DFS(int x, int y, int size) {
+        if (check(x, y, size, board[x][y])) {
+            if (board[x][y] == 1) {
+                sb.append("1");
+            } else {
+                sb.append("0");
             }
-
             return;
         }
-
-        int newSize = size / 2;
         sb.append("(");
-        quadTree(x, y, newSize);
-        quadTree(x, y + newSize, newSize);
-        quadTree(x + newSize, y, newSize);
-        quadTree(x + newSize, y + newSize, newSize);
+        DFS(x, y, size / 2);
+        DFS(x, y + size / 2, size / 2);
+        DFS(x + size / 2, y, size / 2);
+        DFS(x + size / 2, y + size / 2, size / 2);
         sb.append(")");
     }
 
-    private static boolean check(int x, int y, int size) {
-        int color = arr[x][y];
+    private static boolean check(int x, int y, int size, int color) {
         for (int i = x; i < x + size; i++) {
             for (int j = y; j < y + size; j++) {
-                if (color != arr[i][j]) {
+                if (board[i][j] != color)
                     return false;
-                }
             }
         }
         return true;
