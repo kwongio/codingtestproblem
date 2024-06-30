@@ -9,8 +9,8 @@ public class Main {
             arr[i] = Integer.parseInt(br.readLine());
             sum += arr[i];
         }
-        for (int i = 0; i < 8; i++) {
-            for (int j = i+1; j < 9; j++) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < i; j++) {
                 if (sum - arr[i] - arr[j] == 100) {
                     arr[i] = 101;
                     arr[j] = 101;
