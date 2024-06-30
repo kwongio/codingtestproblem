@@ -12,6 +12,10 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         int M = Integer.parseInt(br.readLine());
+        if(M > 200000){
+            System.out.println(0);
+            return;
+        }
         arr = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
