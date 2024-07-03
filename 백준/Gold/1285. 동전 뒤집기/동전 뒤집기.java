@@ -11,7 +11,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        arr = new int[1000000];
+        int pow = (int) Math.pow(2, N);
+        arr = new int[pow];
+
         for (int i = 0; i < N; i++) {
             String s = br.readLine();
             int v = 1;
