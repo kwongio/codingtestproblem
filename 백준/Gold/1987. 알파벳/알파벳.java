@@ -1,45 +1,44 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.StringTokenizer;
 
 public class Main {
-
     static int R;
     static int C;
-    static int[][] map;
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, 1, 0, -1};
-    static boolean[] visited;
-    static int max = 0;
+    static char[][] board;
+    static int visit = 0;
 
+    static int[] dx = {1, -1, 0, 0};
+    static int max = Integer.MIN_VALUE;
+    static int[] dy = {0, 0, 1, -1};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         R = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
-        map = new int[R][C];
-        visited = new boolean[26];
+        board = new char[R][C];
         for (int i = 0; i < R; i++) {
-            String str = br.readLine();
+            String s = br.readLine();
             for (int j = 0; j < C; j++) {
-                map[i][j] = str.charAt(j) - 'A';
+                board[i][j] = s.charAt(j);
             }
         }
+        visit |= 1 << board[0][0];
         DFS(0, 0, 1);
         System.out.println(max);
     }
 
-    private static void DFS(int x, int y, int count) {
-        visited[map[x][y]] = true;
-        max = Math.max(max, count);
+    private static void DFS(int sx, int sy, int count) {
+        max = Math.max(count, max);
         for (int i = 0; i < 4; i++) {
-            int nx = dx[i] + x;
-            int ny = dy[i] + y;
-            if (nx >= 0 && nx < R && ny >= 0 && ny < C && !visited[map[nx][ny]]) {
+            int nx = dx[i] + sx;
+            int ny = dy[i] + sy;
+            if (nx >= 0 && nx < R && ny >= 0 && ny < C && (visit &  1<< board[nx][ny]) != 1 << board[nx][ny]) {
+                visit |= 1 << board[nx][ny];
                 DFS(nx, ny, count + 1);
-                visited[map[nx][ny]] = false;
+                visit &= ~(1 << board[nx][ny]);
             }
         }
     }
