@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
@@ -11,7 +12,7 @@ public class Main {
     static boolean[] visit;
     static int cnt;
 
-    static Queue<Integer> q = new LinkedList<>();
+    static Queue<Integer> q = new ArrayDeque<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -30,18 +31,18 @@ public class Main {
             int input = arr[i];
             if (!visit[input]) {
                 if (q.size() == N) {
-                    int removeIdx = -1;
-                    int value = -1;
+                    int removeIdx = 0;
+                    int value = 0;
                     for (int v : q) {
-                        int nextUse = Integer.MAX_VALUE;
+                        int remove = Integer.MAX_VALUE;
                         for (int j = i + 1; j < K; j++) {
                             if (v == arr[j]) {
-                                nextUse = j;
+                                remove = j;
                                 break;
                             }
                         }
-                        if (nextUse > removeIdx) {
-                            removeIdx = nextUse;
+                        if (removeIdx < remove) {
+                            removeIdx = remove;
                             value = v;
                         }
                     }
@@ -54,5 +55,6 @@ public class Main {
             }
         }
         System.out.println(cnt);
+
     }
 }
