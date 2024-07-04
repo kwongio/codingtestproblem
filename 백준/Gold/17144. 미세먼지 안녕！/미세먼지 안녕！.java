@@ -75,7 +75,6 @@ public class Main {
         for (int i = up - 1; i > 0; i--) {
             board[i][0] = board[i - 1][0];
         }
-
         for (int i = 0; i < C - 1; i++) {
             board[0][i] = board[0][i + 1];
         }
@@ -86,7 +85,6 @@ public class Main {
             board[up][i] = board[up][i - 1];
         }
         board[up][1] = 0;
-
 
 
         for (int i = down + 1; i < R - 1; i++) {
@@ -104,17 +102,10 @@ public class Main {
         for (int i = C - 1; i > 1; i--) {
             board[down][i] = board[down][i - 1];
         }
-
         board[down][1] = 0;
-//        System.out.println();
-//        for (int i = 0; i < R; i++) {
-//            System.out.println(Arrays.toString(board[i]));
-//        }
     }
 
     private static void spread() {
-        List<int[]> t = new ArrayList<>();
-        boolean[][] visit = new boolean[R][C];
         int[][] temp = new int[R][C];
         for (int[] d : dust) {
             int count = 0;
@@ -127,17 +118,9 @@ public class Main {
                 if (nx >= 0 && nx < R && ny >= 0 && ny < C && board[nx][ny] != -1) {
                     count++;
                     temp[nx][ny] += cost;
-                    if (!visit[nx][ny]) {
-                        t.add(new int[]{nx, ny});
-                        visit[nx][ny] = true;
-                    }
                 }
             }
             temp[x][y] += board[x][y] - cost * count;
-            if (!visit[x][y]) {
-                visit[x][y] = true;
-                t.add(new int[]{x, y});
-            }
         }
 
         for (int i = 0; i < R; i++) {
