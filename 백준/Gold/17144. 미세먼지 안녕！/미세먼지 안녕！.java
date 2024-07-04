@@ -46,8 +46,8 @@ public class Main {
                 break;
             }
         }
+        answer = 0;
         while (T > 0) {
-            answer = 0;
             spread();
             air();
             dust.clear();
@@ -55,53 +55,35 @@ public class Main {
                 for (int j = 0; j < C; j++) {
                     if (board[i][j] >= 1) {
                         dust.add(new int[]{i, j});
-                        answer += board[i][j];
+
                     }
                 }
             }
             T--;
         }
 
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
+                if (board[i][j] >= 1) {
+                    answer += board[i][j];
+                }
+            }
+        }
+
         System.out.println(answer);
-//        for (int i = 0; i < R; i++) {
-//            for (int j = 0; j < C; j++) {
-//                System.out.print(board[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
     }
 
     private static void air() {
-        for (int i = up - 1; i > 0; i--) {
-            board[i][0] = board[i - 1][0];
-        }
-        for (int i = 0; i < C - 1; i++) {
-            board[0][i] = board[0][i + 1];
-        }
-        for (int i = 0; i < up; i++) {
-            board[i][C - 1] = board[i + 1][C - 1];
-        }
-        for (int i = C - 1; i > 1; i--) {
-            board[up][i] = board[up][i - 1];
-        }
+        for (int i = up - 1; i > 0; i--) board[i][0] = board[i - 1][0];
+        for (int i = 0; i < C - 1; i++) board[0][i] = board[0][i + 1];
+        for (int i = 0; i < up; i++) board[i][C - 1] = board[i + 1][C - 1];
+        for (int i = C - 1; i > 1; i--) board[up][i] = board[up][i - 1];
         board[up][1] = 0;
 
-
-        for (int i = down + 1; i < R - 1; i++) {
-            board[i][0] = board[i + 1][0];
-        }
-
-        for (int i = 0; i < C - 1; i++) {
-            board[R - 1][i] = board[R - 1][i + 1];
-        }
-
-        for (int i = R - 1; i > down; i--) {
-            board[i][C - 1] = board[i - 1][C - 1];
-        }
-
-        for (int i = C - 1; i > 1; i--) {
-            board[down][i] = board[down][i - 1];
-        }
+        for (int i = down + 1; i < R - 1; i++) board[i][0] = board[i + 1][0];
+        for (int i = 0; i < C - 1; i++) board[R - 1][i] = board[R - 1][i + 1];
+        for (int i = R - 1; i > down; i--) board[i][C - 1] = board[i - 1][C - 1];
+        for (int i = C - 1; i > 1; i--) board[down][i] = board[down][i - 1];
         board[down][1] = 0;
     }
 
