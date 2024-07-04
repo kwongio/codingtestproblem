@@ -1,50 +1,25 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    static int[] arr;
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-
+    static String str;
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        String input = br.readLine();
+        str = br.readLine();
         String boom = br.readLine();
-        Stack<Character> stack = new Stack<>();
-        char[] charArray = input.toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            stack.push(charArray[i]);
-
-            if (stack.size() >= boom.length()) {
-                boolean flag = true;
-                for (int j = 0; j < boom.length(); j++) {
-                    if (boom.charAt(j) != stack.get(stack.size() - boom.length() + j)) {
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag) {
-                    for (int j = 0; j < boom.length(); j++) {
-                        stack.pop();
-                    }
-                }
+        StringBuilder answer = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            answer.append(str.charAt(i));
+            if (answer.length() >= boom.length() && answer.substring(answer.length() - boom.length()).equals(boom)) {
+                answer.delete(answer.length() - boom.length(), answer.length());
             }
         }
-        StringBuilder sb = new StringBuilder();
-        if (stack.isEmpty()) {
-           sb.append("FRULA");
+        if (answer.toString().isBlank()) {
+            System.out.println("FRULA");
+        } else {
+            System.out.println(answer);
 
-        }else{
-            for (int i = 0; i < stack.size(); i++) {
-              sb.append(stack.get(i));
-            }
         }
-        System.out.println(sb);
-
-
     }
 }
