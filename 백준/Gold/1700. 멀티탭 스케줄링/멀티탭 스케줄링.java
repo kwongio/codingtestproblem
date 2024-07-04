@@ -31,8 +31,8 @@ public class Main {
             int input = arr[i];
             if (!visit[input]) {
                 if (q.size() == N) {
-                    int removeIdx = 0;
-                    int value = 0;
+                    int removeIdx = -1;
+                    int value = -1;
                     for (int v : q) {
                         int remove = Integer.MAX_VALUE;
                         for (int j = i + 1; j < K; j++) {
