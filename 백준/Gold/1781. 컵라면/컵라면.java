@@ -29,13 +29,11 @@ public class Main {
         for (int i = 0; i < N; i++) {
             int a = arr[i][0];
             int b = arr[i][1];
+            answer+= b;
             q.offer(b);
             if (q.size() > a) {
-                q.poll();
+                answer-= q.poll();
             }
-        }
-        while (!q.isEmpty()) {
-            answer += q.poll();
         }
         System.out.println(answer);
 
