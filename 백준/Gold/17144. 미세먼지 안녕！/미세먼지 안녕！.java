@@ -1,24 +1,21 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    static int R;
-    static int C;
-    static int T;
-
     static int[][] board;
-
-    static int up;
-    static int down;
-    static int[] dx = {1, -1, 0, 0};
-
-    static int[] dy = {0, 0, 1, -1};
-
-    static List<int[]> dust = new ArrayList<>();
-    static int answer = 0;
+    static int R, C, T;
+    static int[] dy = {1, 0, -1, 0};
+    static int[] dx = {0, -1, 0, 1};
+    static int[] dy2 = {1, 0, -1, 0};
+    static int[] dx2 = {0, 1, 0, -1};
+    static List<int[]> list = new ArrayList<>();
+    static List<int[]> up = new ArrayList<>();
+    static List<int[]> down = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,87 +25,112 @@ public class Main {
         T = Integer.parseInt(st.nextToken());
         board = new int[R][C];
 
-
+        boolean flag = false;
         for (int i = 0; i < R; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < C; j++) {
                 board[i][j] = Integer.parseInt(st.nextToken());
-                if (board[i][j] >= 1) {
-                    dust.add(new int[]{i, j});
-                }
             }
         }
 
         for (int i = 0; i < R; i++) {
             if (board[i][0] == -1) {
-                up = i;
-                down = i + 1;
-                break;
-            }
-        }
-        answer = 0;
-        while (T > 0) {
-            spread();
-            air();
-            dust.clear();
-            for (int i = 0; i < R; i++) {
-                for (int j = 0; j < C; j++) {
-                    if (board[i][j] >= 1) {
-                        dust.add(new int[]{i, j});
-
-                    }
+                if (!flag) {
+                    up = chuck(i, 0, dx, dy);
+                    flag = true;
+                } else {
+                    down = chuck(i, 0, dx2, dy2);
                 }
             }
-            T--;
         }
-
+        for (int i = 0; i < T; i++) {
+            pushDusk();
+            spread();
+            clean();
+        }
+        int answer = 0;
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
-                if (board[i][j] >= 1) {
+                if (board[i][j] != -1) {
                     answer += board[i][j];
                 }
             }
         }
-
         System.out.println(answer);
     }
 
-    private static void air() {
-        for (int i = up - 1; i > 0; i--) board[i][0] = board[i - 1][0];
-        for (int i = 0; i < C - 1; i++) board[0][i] = board[0][i + 1];
-        for (int i = 0; i < up; i++) board[i][C - 1] = board[i + 1][C - 1];
-        for (int i = C - 1; i > 1; i--) board[up][i] = board[up][i - 1];
-        board[up][1] = 0;
+    private static void clean() {
+        for (int i = up.size() - 1; i > 0; i--) {
+            int[] now = up.get(i);
+            int[] next = up.get(i - 1);
+            board[now[0]][now[1]] = board[next[0]][next[1]];
+        }
+        int[] d = up.get(0);
+        board[d[0]][d[1]] = 0;
 
-        for (int i = down + 1; i < R - 1; i++) board[i][0] = board[i + 1][0];
-        for (int i = 0; i < C - 1; i++) board[R - 1][i] = board[R - 1][i + 1];
-        for (int i = R - 1; i > down; i--) board[i][C - 1] = board[i - 1][C - 1];
-        for (int i = C - 1; i > 1; i--) board[down][i] = board[down][i - 1];
-        board[down][1] = 0;
+        for (int i = down.size() - 1; i > 0; i--) {
+            int[] now = down.get(i);
+            int[] next = down.get(i - 1);
+            board[now[0]][now[1]] = board[next[0]][next[1]];
+        }
+        int[] d2 = down.get(0);
+        board[d2[0]][d2[1]] = 0;
+    }
+
+    private static List<int[]> chuck(int sx, int sy, int[] dx, int[] dy) {
+        List<int[]> temp = new ArrayList<>();
+        int x = sx;
+        int y = sy;
+        int cnt = 0;
+        while (true) {
+            int nx = x + dx[cnt];
+            int ny = y + dy[cnt];
+            if (nx < 0 || nx >= R || ny < 0 || ny >= C) {
+                cnt++;
+                if (cnt >= dx.length) {
+                    break;
+                }
+                nx = x + dx[cnt];
+                ny = y + dy[cnt];
+            }
+            if (sx == nx && sy == ny) break;
+            x = nx;
+            y = ny;
+            temp.add(new int[]{nx, ny});
+        }
+        return temp;
+    }
+
+    private static void pushDusk() {
+        list.clear();  // 매 반복마다 list를 초기화해야 함
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
+                if (board[i][j] > 0) {
+                    list.add(new int[]{i, j});
+                }
+            }
+        }
     }
 
     private static void spread() {
         int[][] temp = new int[R][C];
-        for (int[] d : dust) {
-            int count = 0;
-            int x = d[0];
-            int y = d[1];
-            int cost = board[x][y] / 5;
+        for (int[] dusk : list) {
+            int x = dusk[0];
+            int y = dusk[1];
+            int value = board[x][y] / 5;
             for (int i = 0; i < 4; i++) {
                 int nx = dx[i] + x;
                 int ny = dy[i] + y;
                 if (nx >= 0 && nx < R && ny >= 0 && ny < C && board[nx][ny] != -1) {
-                    count++;
-                    temp[nx][ny] += cost;
+                    temp[nx][ny] += value;
+                    board[x][y] -= value;
                 }
             }
-            temp[x][y] += board[x][y] - cost * count;
         }
-
         for (int i = 0; i < R; i++) {
-            board[i] = Arrays.copyOf(temp[i], temp[0].length);
+            for (int j = 0; j < C; j++) {
+                board[i][j] += temp[i][j];
+            }
         }
-        board[up][0] = -1;
-        board[down][0] = -1;
     }
 }
