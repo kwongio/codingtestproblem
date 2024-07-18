@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -53,22 +52,13 @@ public class Main {
             cur = list.get(cur).get(1);
             cnt--;
         }
-        if (cnt > 0) {
-            ArrayDeque<Integer> q = new ArrayDeque<>();
-            q.offer(cur);
-            int next = 0;
-            while (!q.isEmpty()) {
-                int now = q.poll();
-                next = list.get(now).get(0);
-                q.offer(next);
-                if (next == 100) break;
-                cnt--;
-                if (cnt == 0) break;
-            }
-            return next;
-        } else {
-            return cur;
+
+        while (cnt > 0) {
+            cur = list.get(cur).get(0);
+            if (cur == 100) break;
+            cnt--;
         }
+        return cur;
     }
 
 
