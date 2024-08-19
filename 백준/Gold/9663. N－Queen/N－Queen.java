@@ -1,49 +1,49 @@
+import java.util.*;
+
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
 import java.io.*;
-import java.util.StringTokenizer;
 
 public class Main {
-    static StringBuilder sb;
-    static int N;
-    static int[] map;
-    static int count = 0;
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	static int N;
+	static int[] select;
+	static boolean[] visit;
+	static int count;
+	// 순서가 중요
+	// 중복 제거
 
-    public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		select = new int[N];
+		visit = new boolean[N];
+		DFS(0);
+		System.out.println(count);
+	}
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        map = new int[N];
+	static void DFS(int depth) {
+		// 연산자 다 고름
+		if (depth == N) {
+			count++;
+			return;
+		}
+		for (int i = 0; i < N; i++) {
+			select[depth] = i;
+			if (!visit[i] && check(depth)) {
+				visit[i] = true;
+				DFS(depth + 1);
+				visit[i] = false;
+			}
+		}
+	}
 
-        nQueen(0);
-        System.out.println(count);
-
-    }
-
-    private static void nQueen(int depth) {
-        if (depth == N) {
-            count++;
-            return;
-        }
-        for (int i = 0; i < N; i++) {
-            map[depth] = i;
-
-            if (possible(depth)) {
-                nQueen(depth + 1);
-            }
-        }
-    }
-
-    private static boolean possible(int depth) {
-        for (int i = 0; i < depth; i++) {
-            if (map[depth] == map[i]) return false;
-            else if (Math.abs(depth - i) == Math.abs(map[depth] - map[i])) return false;
-
-        }
-        return true;
-
-
-    }
-
-
+	static boolean check(int depth) {
+		for (int i = 0; i < depth; i++) {
+			if (Math.abs(depth - i) == Math.abs(select[depth] - select[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
