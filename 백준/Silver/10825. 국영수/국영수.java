@@ -20,10 +20,12 @@ public class Main {
 			int math = Integer.parseInt(st.nextToken());
 			persons.add(new Person(name, math, english, korean));
 		}
+		StringBuilder sb = new StringBuilder();
 		Collections.sort(persons);
 		for (Person p : persons) {
-			System.out.println(p.name);
+			sb.append(p.name).append("\n");
 		}
+		System.out.println(sb.toString());
 	}
 
 	static class Person implements Comparable<Person> {
@@ -42,7 +44,6 @@ public class Main {
 
 		@Override
 		public int compareTo(Person o) {
-
 			if (o.korean == this.korean) {
 				if (this.english == o.english) {
 					// 국어 점수와 영어 점수가 같으면 수학점수가 감소하는 순서로
