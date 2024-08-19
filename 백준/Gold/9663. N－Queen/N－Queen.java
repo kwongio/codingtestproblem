@@ -29,11 +29,14 @@ public class Main {
 			return;
 		}
 		for (int i = 0; i < N; i++) {
-			select[depth] = i;
-			if (!visit[i] && check(depth)) {
-				visit[i] = true;
-				DFS(depth + 1);
-				visit[i] = false;
+			if (!visit[i]) {
+				select[depth] = i;
+				if (check(depth)) {
+					visit[i] = true;
+					DFS(depth + 1);
+					visit[i] = false;
+				}
+
 			}
 		}
 	}
