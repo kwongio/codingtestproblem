@@ -3,8 +3,7 @@ import java.io.*;
 
 public class Main {
 	static int N;
-	static Map<String, Integer> c = new HashMap<String, Integer>();
-	static TreeSet<String> list = new TreeSet<>();
+	static TreeMap<String, Integer> list = new TreeMap<>();
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -12,15 +11,14 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		for (int i = 0; i < N; i++) {
 			String ext = br.readLine().split("\\.")[1];
-			if (list.contains(ext)) {
-				c.put(ext, c.get(ext) + 1);
+			if (list.containsKey(ext)) {
+				list.put(ext, list.get(ext) + 1);
 			} else {
-				list.add(ext);
-				c.put(ext, 1);
+				list.put(ext, 1);
 			}
 		}
-		for (String s : list) {
-			System.out.println(s + " " + c.get(s));
+		for (String s : list.keySet()) {
+			System.out.println(s + " " + list.get(s));
 		}
 	}
 }
