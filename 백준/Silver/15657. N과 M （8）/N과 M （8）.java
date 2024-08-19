@@ -29,13 +29,13 @@ public class Main {
 
 	static void DFS(int depth, int start) {
 		if (depth == M) {
-			StringBuilder sb1 = new StringBuilder();
-			for (int i = 0; i < select.length; i++) {
-				sb1.append(select[i]);
-			}
-			if (set.contains(sb1.toString()))
-				return;
-			set.add(sb1.toString());
+//			StringBuilder sb1 = new StringBuilder();
+//			for (int i = 0; i < select.length; i++) {
+//				sb1.append(select[i]);
+//			}
+//			if (set.contains(sb1.toString()))
+//				return;
+//			set.add(sb1.toString());
 
 			for (int i = 0; i < select.length; i++) {
 				sb.append(select[i]).append(" ");
