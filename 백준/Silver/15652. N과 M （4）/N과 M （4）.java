@@ -1,35 +1,40 @@
-
-
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    static int n;
-    static int m;
-    static boolean visited[];
-    static int selected[];
+	static int N;
+	static int M;
+	static int[] select;
+	static boolean[] visit;
+	static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        m = sc.nextInt();
-        visited = new boolean[n + 1];
-        selected = new int[m];
-        DFS(1, 0);
-    }
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		select = new int[M];
+		visit = new boolean[N];
 
-    private static void DFS(int at, int depth) {
-        if (depth == m) {
-            for (int i = 0; i < m; i++) {
-                System.out.print(selected[i] + " ");
+		DFS(0, 1);
+		System.out.println(sb.toString());
+	}
 
-            }
-            System.out.println();
-        } else {
-
-            for (int i = at; i <= n; i++) {
-                selected[depth] = i;
-                DFS(i, depth + 1);
-            }
-        }
-    }
+	static void DFS(int depth, int start) {
+		if (depth == M) {
+			for (int i = 0; i < select.length; i++) {
+				sb.append(select[i]).append(" ");
+			}
+			sb.append("\n");
+		} else {
+			for (int i = start ; i <= N; i++) {
+//				if (!visit[i - 1]) {
+//					visit[i - 1] = true;
+					select[depth] = i;
+					DFS(depth + 1, i);
+//					visit[i - 1] = false;
+//				}
+			}
+		}
+	}
 }
