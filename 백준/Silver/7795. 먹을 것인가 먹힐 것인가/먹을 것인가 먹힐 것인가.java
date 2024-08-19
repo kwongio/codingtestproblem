@@ -1,59 +1,51 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.*;
+import java.io.*;
 
-class Main {
+public class Main {
+	static int T;
+	static int N, M;
+	static int[] a;
+	static int[] b;
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-		int T = Integer.parseInt(br.readLine());
-		for (int i = 0; i < T; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			int N = Integer.parseInt(st.nextToken());
-			int M = Integer.parseInt(st.nextToken());
-
-			int[] A = new int[N];
-			int[] B = new int[M];
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		T = Integer.parseInt(st.nextToken());
+		for (int testCase = 0; testCase < T; testCase++) {
+			st = new StringTokenizer(br.readLine());
+			N = Integer.parseInt(st.nextToken());
+			a = new int[N];
+			M = Integer.parseInt(st.nextToken());
+			b = new int[M];
 
 			st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < N; j++) {
-				A[j] = Integer.parseInt(st.nextToken());
+			for (int i = 0; i < N; i++) {
+				a[i] = Integer.parseInt(st.nextToken());
 			}
-
 			st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < M; j++) {
-				B[j] = Integer.parseInt(st.nextToken());
+			for (int i = 0; i < M; i++) {
+				b[i] = Integer.parseInt(st.nextToken());
 			}
-
-			Arrays.sort(B);
-			int result = 0;
-
-			for (int j = 0; j < N; j++) {
-				int first = 0;
-				int end = M - 1;
-				int index = 0;
-
-				while (first <= end) {
-					int mid = (first + end) / 2;
-					if (B[mid] < A[j]) {
-						first = mid + 1;
-						index = mid + 1;
+			Arrays.sort(b);
+			int ret = 0;
+			for (int i = 0; i < N; i++) {
+				int s = 0;
+				int e = M - 1;
+				int mid = 0;
+				int d = 0;
+				while (s <= e) {
+					mid = (s + e) / 2;
+					if (b[mid] < a[i]) {
+						s = mid + 1;
+						d = mid + 1;
 					} else {
-						end = mid - 1;
+						e = mid - 1;
 					}
 				}
-				result += index;
+				ret += d;
 			}
-
-			bw.write(Integer.toString(result) + "\n");
+			System.out.println(ret);
 		}
 
-		bw.flush();
-		bw.close();
-		br.close();
 	}
 }
