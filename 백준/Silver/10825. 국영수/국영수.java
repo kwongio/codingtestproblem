@@ -44,19 +44,13 @@ public class Main {
 
 		@Override
 		public int compareTo(Person o) {
-			if (o.korean == this.korean) {
-				if (this.english == o.english) {
-					// 국어 점수와 영어 점수가 같으면 수학점수가 감소하는 순서로
-					if (o.math == this.math) {
-						return this.name.compareTo(o.name);
-					}
-					return Integer.compare(o.math, this.math);
-				}
-				// 국어 점수가 같으면 영엊 점수가 증가하는 데로
+			if (this.korean != o.korean)
+				return Integer.compare(o.korean, this.korean);
+			if (this.english != o.english)
 				return Integer.compare(this.english, o.english);
-			}
-			// 국어 점수가 감소하는 순서대로
-			return Integer.compare(o.korean, this.korean);
+			if (this.math != o.math)
+				return Integer.compare(o.math, this.math);
+			return this.name.compareTo(o.name);
 		}
 	}
 }
