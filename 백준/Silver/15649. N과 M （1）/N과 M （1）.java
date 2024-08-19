@@ -1,43 +1,40 @@
+import java.util.*;
 import java.io.*;
-import java.util.StringTokenizer;
 
 public class Main {
-    static StringBuilder sb;
-    static boolean[] visited;
-    static int N;
-    static int M;
+	static int N;
+	static int M;
+	static int[] select;
+	static boolean[] visit;
+	static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		select = new int[M];
+		visit = new boolean[N];
 
-        visited = new boolean[N + 1];
-        DFS(0, "");
+		DFS(0, 1);
+		System.out.println(sb.toString());
+	}
 
-
-    }
-
-    private static void DFS(int L, String select) {
-        if (L == M) {
-            System.out.println(select);
-            return;
-        }
-
-        for (int i = 1; i <= N; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
-                DFS(L + 1, select + i + " ");
-                visited[i] = false;
-            }
-        }
-
-
-    }
-
-
-
-
+	static void DFS(int depth, int start) {
+		if (depth == M) {
+			for (int i = 0; i < select.length; i++) {
+				sb.append(select[i]).append(" ");
+			}
+			sb.append("\n");
+		} else {
+			for (int i = 1; i <= N; i++) {
+				if (!visit[i - 1]) {
+					visit[i - 1] = true;
+					select[depth] = i;
+					DFS(depth + 1, i);
+					visit[i - 1] = false;
+				}
+			}
+		}
+	}
 }
