@@ -1,44 +1,44 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
+import java.io.*;
+
 public class Main {
+	static int N;
+	static int[] a;
+	static int min = Integer.MAX_VALUE;
 
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        st = new StringTokenizer(br.readLine());
-        long[] answer = new long[2];
-        long[] arr = new long[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = Long.parseLong(st.nextToken());
-        }
-
-        Arrays.sort(arr);
-        long min = Long.MAX_VALUE;
-        int start = 0;
-        int end = arr.length - 1;
-        while (start < end) {
-            long sum = arr[start] + arr[end];
-
-            if (Math.abs(sum) < min) {
-                min = Math.abs(sum);
-                answer[0] = arr[start];
-                answer[1] = arr[end];
-                if (sum == 0) {
-                    break;
-                }
-            }
-            if (sum < 0) {
-                start++;
-            } else {
-                end--;
-            }
-        }
-        System.out.println(answer[0] + " " + answer[1]);
-    }
-
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		st = new StringTokenizer(br.readLine());
+		a = new int[N];
+		for (int i = 0; i < N; i++) {
+			a[i] = Integer.parseInt(st.nextToken());
+		}
+		Arrays.sort(a);
+		List<Integer> list = new ArrayList<Integer>();
+		int s = 0;
+		int e = N - 1;
+		while (s < e) {
+			int v = a[s] + a[e];
+			int ret = Math.abs(a[s] + a[e]);
+			if (ret < min) {
+				list.clear();
+				list.add(a[s]);
+				list.add(a[e]);
+				min = ret;
+			}
+			if (v < 0) {
+				s++;
+			} else {
+				e--;
+			}
+		}
+		for (Integer v : list) {
+			System.out.print(v + " ");
+		}
+	}
 }
