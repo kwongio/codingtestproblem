@@ -1,39 +1,39 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
+import java.io.*;
+import java.lang.reflect.Array;
+
 public class Main {
+	static int N, M, X;
+	static int[] a, b;
 
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        st = new StringTokenizer(br.readLine());
-        int[] arr = new int[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-        int X = Integer.parseInt(br.readLine());
-        Arrays.sort(arr);
-        int start = 0;
-        int end = N - 1;
-        int count = 0;
-        while (start < end) {
-            int sum = arr[start] + arr[end];
-            if (sum == X) {
-                count++;
-            }
-            if (sum >= X) {
-                end--;
-            } else if (sum < X) {
-                start++;
-            }
-
-
-        }
-        System.out.println(count);
-    }
-
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		a = new int[N];
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			a[i] = Integer.parseInt(st.nextToken());
+		}
+		X = Integer.parseInt(br.readLine());
+		Arrays.sort(a);
+		int s = 0;
+		int e = N - 1;
+		int ret = 0;
+		while (s < e) {
+			int sum = a[s] + a[e];
+			if (sum > X) {
+				e--;
+			} else if (sum < X) {
+				s++;
+			} else {
+				ret++;
+				e--;
+			}
+		}
+		System.out.println(ret);
+	}
 }
