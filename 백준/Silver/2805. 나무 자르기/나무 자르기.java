@@ -1,44 +1,49 @@
+import java.util.*;
+
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
 import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class Main {
-    static int[] arr;
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	static int N;
+	static int M;
+	static int[] arr;
 
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		arr = new int[N];
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		int s = 0;
+		int e = 1000000000;
+		int ret = 0;
+		while (s <= e) {
+			int mid = s + (e - s) / 2;
+			if (check(mid)) {
+				ret = Math.max(ret, mid);
+				s = mid + 1;
+			} else {
+				e = mid - 1;
+			}
+		}
+		System.out.println(ret);
+	}
 
-    public static void main(String[] args) throws IOException {
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-        int[] arr = new int[N];
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-
-        long left = 0;
-        long right = Arrays.stream(arr).max().getAsInt();
-        long mid;
-
-
-        while (left < right) {
-            mid = (left + right) / 2;
-            long count = 0;
-            for (int i = 0; i < N; i++) {
-                if(arr[i] - mid > 0){
-                    count += (arr[i] - mid);
-                }
-            }
-            if (count < M) {
-                right = mid;
-            } else {
-                left = mid + 1;
-            }
-        }
-        System.out.println(left - 1);
-    }
+	static boolean check(int v) {
+		long sum = 0;
+		for (int i = 0; i < arr.length; i++) {
+			if (v < arr[i]) {
+				sum += arr[i] - v;
+			}
+		}
+		if (sum >= M) {
+			return true;
+		}
+		return false;
+	}
 }
