@@ -21,7 +21,7 @@ public class Main {
 		Arrays.sort(arr);
 
 		int s = 1;
-		int e = 1000000000;
+		int e = arr[N - 1];
 		int ret = 1;
 		while (s <= e) {
 			int mid = s + (e - s) / 2;
