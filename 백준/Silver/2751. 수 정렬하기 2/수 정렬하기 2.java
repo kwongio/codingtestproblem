@@ -1,27 +1,29 @@
-import java.io.*;
 import java.util.*;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
+import java.io.*;
+import java.lang.reflect.Array;
+
 public class Main {
+	static int N;
+	static int[] a;
 
-    static int N;
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		a = new int[N];
+		for (int i = 0; i < N; i++) {
+			a[i] = Integer.parseInt(br.readLine());
+		}
+		Arrays.sort(a);
+		StringBuilder sb = new StringBuilder();
 
+		for (int i = 0; i < N; i++) {
+			sb.append(a[i]).append("\n");
+		}
+		System.out.println(sb);
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int N = Integer.parseInt(br.readLine());
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < N; i++) {
-            list.add(Integer.parseInt(br.readLine()));
-        }
-        Collections.sort(list);
-
-        for (Integer i : list) {
-            bw.write(i + "\n");
-        }
-        bw.flush();
-        bw.close();
-
-    }
-
+	}
 }
