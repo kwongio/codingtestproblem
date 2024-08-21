@@ -1,32 +1,42 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
+import java.io.*;
 
-class Main {
-    static int N;
-    static int M;
+public class Main {
+	static int N;
+	static int M;
+	static int[] a;
 
-    static HashSet<Integer> set = new HashSet<>();
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        st = new StringTokenizer(br.readLine());
-
-        for(int i = 0 ; i < N; i++){
-            set.add(Integer.parseInt(st.nextToken()));
-        }
-        st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        st = new StringTokenizer(br.readLine());
-        for(int i = 0 ; i < N; i++){
-            if (set.contains(Integer.parseInt(st.nextToken()))) {
-                System.out.println(1);
-            }else{
-                System.out.println(0);
-            }
-        }
-
-    }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		a = new int[N];
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			a[i] = Integer.parseInt(st.nextToken());
+		}
+		Arrays.sort(a);
+		M = Integer.parseInt(br.readLine());
+		st = new StringTokenizer(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < M; i++) {
+			int b = Integer.parseInt(st.nextToken());
+			int s = 0;
+			int e = N - 1;
+			while (s <= e) {
+				int mid = s + (e - s) / 2;
+				if (a[mid] == b) {
+					sb.append(1).append("\n");
+					break;
+				} else if (a[mid] > b) {
+					e = mid - 1;
+				} else if (a[mid] < b) {
+					s = mid + 1;
+				}
+			}
+			if(s >  e) {
+				sb.append(0).append("\n");
+			}
+		}
+		System.out.println(sb);
+	}
 }
