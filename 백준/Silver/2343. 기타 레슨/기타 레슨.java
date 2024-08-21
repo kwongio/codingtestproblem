@@ -1,56 +1,50 @@
 import java.util.*;
 import java.io.*;
 
-class Main {
-	static int M;
+public class Main {
 	static int N;
-	static int[] arr;
-	static long min;
+	static int M;
+	static int[] a;
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		arr = new int[N];
+		a = new int[N];
 		st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
-			arr[i] = Integer.parseInt(st.nextToken());
+			a[i] = Integer.parseInt(st.nextToken());
 		}
 		long s = 1;
-		long e = 100000 * 100000;
+		long e = Long.MAX_VALUE;
 		long min = Long.MAX_VALUE;
-		// 큰걸로쪼개면
 		while (s <= e) {
 			long mid = s + (e - s) / 2;
 			if (check(mid)) {
-				min = Math.min(mid, min);
-				// 낮힐수록 많이 나옴
 				e = mid - 1;
+				min = (long) Math.min(min, mid);
 			} else {
-				// 높힐수록 적게나옴
 				s = mid + 1;
 			}
 		}
 		System.out.println(min);
 	}
 
-	public static boolean check(long mid) {
-		long count = 1;
-		long sum = 0;
-		for (int i = 0; i < N; i++) {
-			if (arr[i] > mid)
+	static boolean check(long v) {
+		int count = 1;
+		int sum = 0;
+		for (int i = 0; i < a.length; i++) {
+			if (a[i] > v) {
 				return false;
-			if (sum + arr[i] <= mid) {
-				sum += arr[i];
+			}
+			if (sum + a[i] <= v) {
+				sum += a[i];
 			} else {
-				sum = arr[i];
 				count++;
+				sum = a[i];
 			}
 		}
-		if (count <= M) {
-			return true;
-		}
-		return false;
+		return count <= M;
 	}
 }
