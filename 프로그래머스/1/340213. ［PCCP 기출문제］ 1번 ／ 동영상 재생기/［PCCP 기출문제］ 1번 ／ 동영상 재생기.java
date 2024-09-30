@@ -1,6 +1,10 @@
 import java.util.*;
 
 class Solution {
+    private int openStart;
+    private int openEnd;
+    private int videoLen;
+    private int cur;
     public String solution(
         String video_len, // 동영상 길이 "xx:xx"
         String pos, //현재위치
@@ -9,13 +13,13 @@ class Solution {
         String op_end, // 오프닝 종료시간
         String[] commands // 명령어
     ) {
-        int openStart = convertToMinutes(op_start);
-        int openEnd = convertToMinutes(op_end);
-        int videoLen = convertToMinutes(video_len);
-        int cur = convertToMinutes(pos);
+        openStart = convertToMinutes(op_start);
+        openEnd = convertToMinutes(op_end);
+        videoLen = convertToMinutes(video_len);
+        cur = convertToMinutes(pos);
         
         for(String command : commands){
-            if(openStart <= cur && cur <= openEnd){
+            if(isOpening()){
                 cur = openEnd;
             }
             
@@ -26,23 +30,23 @@ class Solution {
             }
         }
         
-        if(openStart <= cur && cur <= openEnd){
+        if(isOpening()){
             cur = openEnd;
         }
         
         return convertToTime(cur);
     }
     
+    public boolean isOpening(){
+        return openStart <= cur && cur <= openEnd;
+    }
+    
     public int convertToMinutes(String time){
         String[] times = time.split(":");
-        int hour = Integer.valueOf(times[0]) * 60;
-        int minute = Integer.valueOf(times[1]);
-        return hour + minute;
+        return Integer.valueOf(times[0]) * 60 + Integer.valueOf(times[1]);
     }
     
     public String convertToTime(int minutes){
-        int hour = minutes/60;
-        int minute = minutes%60;
-        return String.format("%02d:%02d", hour, minute);
+        return String.format("%02d:%02d", minutes/60, minutes%60);
     }
 }
