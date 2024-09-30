@@ -11,24 +11,26 @@ class Solution {
     ) {
         int openStart = convertToMinutes(op_start);
         int openEnd = convertToMinutes(op_end);
+        int videoLen = convertToMinutes(video_len);
+        int cur = convertToMinutes(pos);
         
         for(String command : commands){
-            int cur = convertToMinutes(pos);
             if(openStart <= cur && cur <= openEnd){
-                pos = op_end;
+                cur = openEnd;
             }
             
             if(command.equals("next")){
-                pos = convertToTime(Math.min(convertToMinutes(pos) + 10, convertToMinutes(video_len)));
+                cur = Math.min(cur + 10, videoLen);
             }else if(command.equals("prev")){
-                pos = convertToTime(Math.max(convertToMinutes(pos) - 10, 0));
+                cur = Math.max(cur - 10, 0);
             }
         }
-        int cur = convertToMinutes(pos);
+        
         if(openStart <= cur && cur <= openEnd){
-            pos = op_end;
+            cur = openEnd;
         }
-        return pos;
+        
+        return convertToTime(cur);
     }
     
     public int convertToMinutes(String time){
