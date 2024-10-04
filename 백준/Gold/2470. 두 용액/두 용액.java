@@ -1,44 +1,44 @@
-import java.util.*;
-
-import javax.swing.plaf.synth.SynthOptionPaneUI;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
-	static int N;
-	static int[] a;
-	static int min = Integer.MAX_VALUE;
+    static int N;
+    static int[] arr;
 
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		N = Integer.parseInt(st.nextToken());
-		st = new StringTokenizer(br.readLine());
-		a = new int[N];
-		for (int i = 0; i < N; i++) {
-			a[i] = Integer.parseInt(st.nextToken());
-		}
-		Arrays.sort(a);
-		List<Integer> list = new ArrayList<Integer>();
-		int s = 0;
-		int e = N - 1;
-		while (s < e) {
-			int v = a[s] + a[e];
-			int ret = Math.abs(a[s] + a[e]);
-			if (ret < min) {
-				list.clear();
-				list.add(a[s]);
-				list.add(a[e]);
-				min = ret;
-			}
-			if (v < 0) {
-				s++;
-			} else {
-				e--;
-			}
-		}
-		for (Integer v : list) {
-			System.out.print(v + " ");
-		}
-	}
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        arr = new int[N];
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+        Arrays.sort(arr);
+
+        int s = 0;
+        int e = arr.length - 1;
+        int[] num = new int[2];
+        int min = Integer.MAX_VALUE;
+        while (s < e) {
+            int v = arr[s] + arr[e];
+            int ret = Math.abs(arr[s] + arr[e]);
+            if (ret == 0) {
+                System.out.println(arr[s] + " " + arr[e]);
+                return;
+            }
+            if (ret < min) {
+                min = ret;
+                num[0] = arr[s];
+                num[1] = arr[e];
+            }
+            if (v < 0) {
+                s++;
+            } else {
+                e--;
+            }
+        }
+        System.out.println(num[0] + " " + num[1]);
+    }
 }
