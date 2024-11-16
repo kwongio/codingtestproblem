@@ -16,15 +16,21 @@ public class Main {
 			p.add(new int[] { h, w });
 		}
 
-		for (int[] v : p) {
-			int count = 1;
-			for (int[] a : p) {
-				if (v[0] < a[0] && v[1] < a[1]) {
-					count++;
+		
+		StringBuilder sb = new StringBuilder();
+		for (int[] p1 : p) {
+			int rank = 1;
+			for (int[] p2 : p) {
+				if (isSmall(p1, p2)) {
+					rank++;
 				}
 			}
-			System.out.print(count + " ");
+			sb.append(rank).append(" ");
 		}
+		System.out.println(sb);
+	}
 
+	public static boolean isSmall(int[] p1, int[] p2) {
+		return p1[0] < p2[0] && p1[1] < p2[1];
 	}
 }
