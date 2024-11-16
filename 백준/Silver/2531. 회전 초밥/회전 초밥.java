@@ -29,7 +29,6 @@ public class Main {
 			if (eat[arr[i]] == 0) {
 				count++;
 			}
-			
 			eat[arr[i]]++;
 		}
 
@@ -45,7 +44,6 @@ public class Main {
 			
 			
 			int end = (i + K - 1) % N;
-//			System.out.println(end);
 			if(eat[arr[end]] == 0) {
 				count++;
 			}
@@ -57,9 +55,6 @@ public class Main {
 				count--;
 			}
 		}
-//		if(eat[C] == 0) {
-//			max = count + 1;
-//		}
 		System.out.println(max);
 
 	}
