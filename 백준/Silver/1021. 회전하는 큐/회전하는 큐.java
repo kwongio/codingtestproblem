@@ -25,7 +25,7 @@ public class Main {
             int half;
 
             if (q.size() % 2 == 0) {
-                half = q.size() / 2 - 1;
+                half = q.size() / 2;
             } else {
                 half = q.size() / 2;
             }
