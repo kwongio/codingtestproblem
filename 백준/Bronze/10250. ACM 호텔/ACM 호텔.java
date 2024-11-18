@@ -12,14 +12,15 @@ public class Main {
             int w = Integer.parseInt(st.nextToken()); // 넓이
             int n = Integer.parseInt(st.nextToken()); // n 번째 어디 배치
 
-            int floor = (n % h);
-            if (floor == 0) {
-                floor = h;
-            }
 
-            int room = (n / h) + 1;
+            int floor;
+            int room;
             if (n % h == 0) {
                 room = n / h;
+                floor = h;
+            } else {
+                floor = (n % h);
+                room = (n / h) + 1;
             }
             System.out.println(floor * 100 + room);
         }
