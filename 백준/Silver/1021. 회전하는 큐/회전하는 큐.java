@@ -22,13 +22,7 @@ public class Main {
         int ans = 0;
         for (int i = 0; i < M; i++) {
             int cur = q.indexOf(arr[i]);
-            int half;
-
-            if (q.size() % 2 == 0) {
-                half = q.size() / 2;
-            } else {
-                half = q.size() / 2;
-            }
+            int half = q.size() / 2;
             if (cur <= half) {
                 for (int j = 0; j < cur; j++) {
                     q.addLast(q.pollFirst());
