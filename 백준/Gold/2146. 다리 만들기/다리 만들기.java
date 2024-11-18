@@ -1,68 +1,65 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    static int N;
-    static int[][] map;
-    static int landNum = 1;
+    static int[][] arr;
     static int[] dx = {1, -1, 0, 0};
     static int[] dy = {0, 0, 1, -1};
-    static boolean[][] visited;
-    static int min = Integer.MAX_VALUE;
+    static boolean[][] visit;
+    static int N;
+    static ArrayDeque<int[]> map = new ArrayDeque<>();
+    static  boolean[][][] visited;
 
-    public static void main(String[] args) throws IOException {
+    // 바다 : 0 , 육지 : 1
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        map = new int[N][N];
+        arr = new int[N][N];
         for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
+                arr[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-
-        visited = new boolean[N][N];
+        visit = new boolean[N][N];
+        int color = 1;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (map[i][j] != 0 && !visited[i][j]) {
-                    BFS(i, j);
+                if (!visit[i][j] && arr[i][j] != 0) {
+                    fillColor(i, j, color);
+                    color++;
                 }
             }
         }
+//        for (int i = 0; i < N; i++) {
+//            System.out.println(Arrays.toString(arr[i]));
+//        }
+      visited = new boolean[color + 1][N][N];
+        BFS();
 
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (map[i][j] != 0) {
-                    visited = new boolean[N][N];
-                    make(i, j);
-                }
-            }
-        }
-        System.out.println(min);
     }
 
-    private static void make(int x, int y) {
-        int currentLand = map[x][y];
-        ArrayDeque<int[]> q = new ArrayDeque<>();
-        q.add(new int[]{x, y, 0});
-        visited[x][y] = true;
-        while (!q.isEmpty()) {
-            int[] now = q.poll();
-            for (int i = 0; i < 4; i++) {
-                int nx = dx[i] + now[0];
-                int ny = dy[i] + now[1];
+    private static void BFS() {
+        while (!map.isEmpty()) {
+            int[] now = map.poll();
+            int x = now[0];
+            int y = now[1];
+            int color = now[2];
+            int count = now[3];
 
-                if (nx >= 0 && nx < N && ny >= 0 && ny < N && currentLand != map[nx][ny] && !visited[nx][ny]) {
-                    visited[nx][ny] = true;
-                    if (map[nx][ny] == 0) {
-                        q.add(new int[]{nx, ny, now[2] + 1});
-                    } else {
-                        min = Math.min(min, now[2]);
+            for (int i = 0; i < 4; i++) {
+                int nx = dx[i] + x;
+                int ny = dy[i] + y;
+                if (nx >= 0 && nx < N && ny >= 0 && ny < N && !visited[color][nx][ny]) {
+                    visited[color][nx][ny] = true;
+                    if (arr[nx][ny] == 0) {
+                        map.add(new int[]{nx, ny, color, count + 1});
+                    } else if (arr[nx][ny] != color) {
+                        System.out.println(count );
                         return;
                     }
                 }
@@ -70,23 +67,27 @@ public class Main {
         }
     }
 
-    private static void BFS(int x, int y) {
+
+    private static void fillColor(int sx, int sy, int color) {
         ArrayDeque<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{x, y});
-        map[x][y] = landNum;
-        visited[x][y] = true;
+        q.add(new int[]{sx, sy});
+        visit[sx][sy] = true;
+        arr[sx][sy] = color;
+        map.add(new int[]{sx, sy, color, 0});
         while (!q.isEmpty()) {
             int[] now = q.poll();
+            int x = now[0];
+            int y = now[1];
             for (int i = 0; i < 4; i++) {
-                int nx = dx[i] + now[0];
-                int ny = dy[i] + now[1];
-                if (nx >= 0 && nx < N && ny >= 0 && ny < N && map[nx][ny] == 1 && !visited[nx][ny]) {
-                    visited[nx][ny] = true;
+                int nx = dx[i] + x;
+                int ny = dy[i] + y;
+                if (nx >= 0 && nx < N && ny >= 0 && ny < N && !visit[nx][ny] && arr[nx][ny] != 0) {
+                    visit[nx][ny] = true;
+                    arr[nx][ny] = color;
+                    map.add(new int[]{nx, ny, color, 0});
                     q.add(new int[]{nx, ny});
-                    map[nx][ny] = landNum;
                 }
             }
         }
-        landNum++;
     }
 }
