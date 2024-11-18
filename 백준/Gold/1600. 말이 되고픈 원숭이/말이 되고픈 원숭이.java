@@ -1,69 +1,93 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
-    static int M;
-    static int[][] board;
-    static int[] dx = {-2, -1, 1, 2, 2, 1, -1, -2};
-    static int[] dy = {1, 2, 2, 1, -1, -2, -2, -1};
 
-    static int[] dx1 = {1, -1, 0, 0};
-    static int[] dy1 = {0, 0, 1, -1};
-    static int K;
+    static int[][] arr;
+    static int min = Integer.MAX_VALUE;
 
-    public static void main(String[] args) throws IOException {
+    //말의 움직임
+    static int[] hx = {-1, -2, -2, -1, 1, 2, 2, 1};
+    static int[] hy = {-2, -1, 1, 2, 2, 1, -1, -2};
+
+    //4방향 인접한 칸
+    static int[] dx = {1, -1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
+
+    static int T, H, W;
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        K = Integer.parseInt(br.readLine());
+        T = Integer.parseInt(br.readLine());
+        // K 말처럼 가능
         StringTokenizer st = new StringTokenizer(br.readLine());
-        M = Integer.parseInt(st.nextToken());
-        N = Integer.parseInt(st.nextToken());
-        board = new int[N][M];
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
-            for (int j = 0; j < M; j++) {
-                board[i][j] = Integer.parseInt(st.nextToken());
+        W = Integer.parseInt(st.nextToken());
+        H = Integer.parseInt(st.nextToken());
+        arr = new int[H][W];
+        for (int i = 0; i < H; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < W; j++) {
+                arr[i][j] = Integer.parseInt(st.nextToken());
             }
+//            System.out.println(Arrays.toString(arr[i]));
         }
+        //맨 왼쪽 위에서 시작해서 0 ,0
+        //맨 오른쪽 아래까지 가야함 H -1, W - 1 // 최소한의 동작으로 도착까지 가는법
 
-        System.out.println(BFS(0, 0));
+        BFS(0, 0);
+        System.out.println(min == Integer.MAX_VALUE ? -1 : min);
 
     }
 
-    private static int BFS(int x, int y) {
-        boolean[][][] visit = new boolean[N][M][K + 1];
+    private static void BFS(int sx, int sy) {
         ArrayDeque<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{x, y, 0, K});
-        visit[x][y][K] = true;
+        q.add(new int[]{sx, sy, T, 0});
+        boolean[][][] visit = new boolean[T + 1][H][W];
+        visit[T][sx][sy] = true;
         while (!q.isEmpty()) {
             int[] now = q.poll();
-            if (now[0] == N - 1 && now[1] == M - 1) {
-                return now[2];
+            int x = now[0];
+            int y = now[1];
+            int t = now[2];
+            int cnt = now[3];
+
+            if (x == H - 1 && y == W - 1) {
+                min = Math.min(cnt, min);
+                continue;
             }
-            if (now[3] > 0) {
+
+            //그냥 가기
+            for (int i = 0; i < 4; i++) {
+                int nx = dx[i] + x;
+                int ny = dy[i] + y;
+                if (nx >= 0 && nx < H && ny >= 0 && ny < W && !visit[t][nx][ny] && arr[nx][ny] == 0) {
+                    visit[t][nx][ny] = true;
+                    q.add(new int[]{nx, ny, t, cnt + 1});
+                }
+            }
+
+            //말처럼 뛰기
+            if (t > 0) {
                 for (int i = 0; i < 8; i++) {
-                    int nx = dx[i] + now[0];
-                    int ny = dy[i] + now[1];
-                    if (nx >= 0 && nx < N && ny >= 0 && ny < M && board[nx][ny] != 1 && !visit[nx][ny][now[3] - 1]) {
-                        visit[nx][ny][now[3] - 1] = true;
-                        q.offer(new int[]{nx, ny, now[2] + 1, now[3] - 1});
+                    int nx = hx[i] + x;
+                    int ny = hy[i] + y;
+                    if (nx >= 0 && nx < H && ny >= 0 && ny < W && !visit[t-1][nx][ny] && arr[nx][ny] == 0) {
+                        visit[t- 1][nx][ny] = true;
+                        q.add(new int[]{nx, ny, t - 1, cnt + 1});
                     }
                 }
             }
-            for (int i = 0; i < 4; i++) {
-                int nx = dx1[i] + now[0];
-                int ny = dy1[i] + now[1];
-                if (nx >= 0 && nx < N && ny >= 0 && ny < M && board[nx][ny] != 1 && !visit[nx][ny][now[3]]) {
 
-                    visit[nx][ny][now[3]] = true;
-                    q.offer(new int[]{nx, ny, now[2] + 1, now[3]});
-                }
-            }
+//            System.out.println(t);
+//
+//            for (int i = 0; i < H; i++) {
+//                System.out.println(Arrays.toString(visit[0][i]));
+//            }
+//            System.out.println();
+
+
         }
-        return -1;
     }
 }
