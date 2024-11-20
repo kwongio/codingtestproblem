@@ -49,6 +49,7 @@ class Main {
             }
 
             if (!visit[time][k][x][y] && time == 1) { //밤일 떄 그냥 한번 넘어감
+                visit[time][k][x][y] = true;
                 q.add(new int[]{x, y, cnt + 1, k, 0});
             }
             for (int i = 0; i < 4; i++) {
