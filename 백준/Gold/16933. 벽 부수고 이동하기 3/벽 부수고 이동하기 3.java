@@ -57,12 +57,12 @@ class Main {
                 int nx = dx[i] + x;
                 int ny = dy[i] + y;
                 if (k > 0) {
-                    if (isRange(nx, ny) && !visit[0][k - 1][nx][ny] && arr[nx][ny] == 1 && time == 0) {
+                    if (isRange(nx, ny) && !visit[time][k - 1][nx][ny] && arr[nx][ny] == 1 && time == 0) {
                         visit[0][k - 1][nx][ny] = true;
                         q.add(new int[]{nx, ny, cnt + 1, k - 1, 1});
                     }
 
-                    if (isRange(x, y) && visit[0][k][x][y] && arr[x][y] == 1 && time == 1) {
+                    if (isRange(x, y) && !visit[time][k][x][y] && arr[x][y] == 1 && time == 1) {
                         q.add(new int[]{x, y, cnt + 1, k, 0});
                     }
 
