@@ -47,25 +47,33 @@ class Main {
             if (x == N - 1 && y == M - 1) {
                 return cnt;
             }
+
+            if (!visit[time][k][x][y] && time == 1) { //밤일 떄 그냥 한번 넘어감
+                q.add(new int[]{x, y, cnt + 1, k, 0});
+            }
             for (int i = 0; i < 4; i++) {
                 int nx = dx[i] + x;
                 int ny = dy[i] + y;
+                if (!isRange(nx, ny)) {
+                    continue;
+                }
                 if (k > 0) {
-                    if (isRange(nx, ny) && !visit[time][k - 1][nx][ny] && arr[nx][ny] == 1 && time == 0) {
+                    if (!visit[time][k - 1][nx][ny] && arr[nx][ny] == 1 && time == 0) {
                         visit[0][k - 1][nx][ny] = true;
                         q.add(new int[]{nx, ny, cnt + 1, k - 1, 1});
-                    } else if (isRange(x, y) && !visit[time][k][x][y] && arr[x][y] == 1 && time == 1) {
-                        q.add(new int[]{x, y, cnt + 1, k, 0});
                     }
+                }
 
+                if (arr[nx][ny] == 0 & !visit[time][k][nx][ny]) {
+                    if (time == 0) {
+                        visit[0][k][nx][ny] = true;
+                        q.add(new int[]{nx, ny, cnt + 1, k, 1});
+                    } else {
+                        visit[1][k][nx][ny] = true;
+                        q.add(new int[]{nx, ny, cnt + 1, k, 0});
+                    }
                 }
-                if (isRange(nx, ny) && !visit[time][k][nx][ny] && arr[nx][ny] == 0 && time == 0) {
-                    visit[0][k][nx][ny] = true;
-                    q.add(new int[]{nx, ny, cnt + 1, k, 1});
-                } else if (isRange(nx, ny) && !visit[time][k][nx][ny] && arr[nx][ny] == 0 && time == 1) {
-                    visit[1][k][nx][ny] = true;
-                    q.add(new int[]{nx, ny, cnt + 1, k, 0});
-                }
+
 
             }
         }
