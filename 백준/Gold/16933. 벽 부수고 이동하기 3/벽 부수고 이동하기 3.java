@@ -8,7 +8,6 @@ class Main {
     static int[] dx = {1, -1, 0, 0};
     static int[] dy = {0, 0, 1, -1};
     static int[][] arr;
-    static int min = Integer.MAX_VALUE;
 
 
     public static void main(String[] args) throws Exception {
@@ -26,16 +25,12 @@ class Main {
             }
         }
 
-        BFS(0, 0);
-        if (min == Integer.MAX_VALUE) {
-            System.out.println(-1);
-        } else {
-            System.out.println(min);
-        }
+        System.out.println(BFS(0, 0));
+
 
     }
 
-    private static void BFS(int sx, int sy) {
+    private static int BFS(int sx, int sy) {
         ArrayDeque<int[]> q = new ArrayDeque<>();
         q.add(new int[]{sx, sy, 1, K, 0}); // 낮부터 시작
         q.add(new int[]{sx, sy, 2, K, 1}); //이동하지 않음
@@ -50,8 +45,7 @@ class Main {
             int k = now[3];
             int time = now[4];
             if (x == N - 1 && y == M - 1) {
-                min = Math.min(cnt, min);
-                continue;
+                return cnt;
             }
             for (int i = 0; i < 4; i++) {
                 int nx = dx[i] + x;
@@ -60,9 +54,7 @@ class Main {
                     if (isRange(nx, ny) && !visit[time][k - 1][nx][ny] && arr[nx][ny] == 1 && time == 0) {
                         visit[0][k - 1][nx][ny] = true;
                         q.add(new int[]{nx, ny, cnt + 1, k - 1, 1});
-                    }
-
-                    if (isRange(x, y) && !visit[time][k][x][y] && arr[x][y] == 1 && time == 1) {
+                    } else if (isRange(x, y) && !visit[time][k][x][y] && arr[x][y] == 1 && time == 1) {
                         q.add(new int[]{x, y, cnt + 1, k, 0});
                     }
 
@@ -77,6 +69,7 @@ class Main {
 
             }
         }
+        return -1;
     }
 
     private static boolean isRange(int x, int y) {
