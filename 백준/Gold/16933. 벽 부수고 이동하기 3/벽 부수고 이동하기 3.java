@@ -34,9 +34,8 @@ class Main {
         ArrayDeque<int[]> q = new ArrayDeque<>();
         q.add(new int[]{sx, sy, 1, K, 0}); // 낮부터 시작
         q.add(new int[]{sx, sy, 2, K, 1}); //이동하지 않음
-        boolean[][][][] visit = new boolean[2][K + 1][N][M];
-        visit[0][K][0][0] = true;
-        visit[1][K][0][0] = true;
+        boolean[][][] visit = new boolean[K + 1][N][M];
+        visit[K][0][0] = true;
         while (!q.isEmpty()) {
             int[] now = q.poll();
             int x = now[0];
@@ -48,8 +47,8 @@ class Main {
                 return cnt;
             }
 
-            if (!visit[time][k][x][y] && time == 1) { //밤일 떄 그냥 한번 넘어감
-                visit[time][k][x][y] = true;
+            if (time == 1) { //밤일 떄 그냥 한번 넘어감
+                visit[k][x][y] = true;
                 q.add(new int[]{x, y, cnt + 1, k, 0});
             }
             for (int i = 0; i < 4; i++) {
@@ -59,23 +58,21 @@ class Main {
                     continue;
                 }
                 if (k > 0) {
-                    if (!visit[time][k - 1][nx][ny] && arr[nx][ny] == 1 && time == 0) {
-                        visit[0][k - 1][nx][ny] = true;
+                    if (!visit[k - 1][nx][ny] && arr[nx][ny] == 1 && time == 0) {
+                        visit[k - 1][nx][ny] = true;
                         q.add(new int[]{nx, ny, cnt + 1, k - 1, 1});
                     }
                 }
 
-                if (arr[nx][ny] == 0 & !visit[time][k][nx][ny]) {
+                if (arr[nx][ny] == 0 & !visit[k][nx][ny]) {
                     if (time == 0) {
-                        visit[0][k][nx][ny] = true;
+                        visit[k][nx][ny] = true;
                         q.add(new int[]{nx, ny, cnt + 1, k, 1});
                     } else {
-                        visit[1][k][nx][ny] = true;
+                        visit[k][nx][ny] = true;
                         q.add(new int[]{nx, ny, cnt + 1, k, 0});
                     }
                 }
-
-
             }
         }
         return -1;
