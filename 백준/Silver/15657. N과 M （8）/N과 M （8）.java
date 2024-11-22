@@ -8,7 +8,6 @@ public class Main {
 	static boolean[] visit;
 	static StringBuilder sb = new StringBuilder();
 	static int[] arr;
-	static Set<String> set = new HashSet<>();
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,26 +28,14 @@ public class Main {
 
 	static void DFS(int depth, int start) {
 		if (depth == M) {
-//			StringBuilder sb1 = new StringBuilder();
-//			for (int i = 0; i < select.length; i++) {
-//				sb1.append(select[i]);
-//			}
-//			if (set.contains(sb1.toString()))
-//				return;
-//			set.add(sb1.toString());
-
 			for (int i = 0; i < select.length; i++) {
 				sb.append(select[i]).append(" ");
 			}
 			sb.append("\n");
 		} else {
 			for (int i = start; i < N; i++) {
-//				if (!visit[i]) {
-//					visit[i] = true;
 				select[depth] = arr[i];
 				DFS(depth + 1, i);
-//					visit[i] = false;
-//				}
 			}
 		}
 	}
