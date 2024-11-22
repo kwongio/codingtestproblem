@@ -50,14 +50,11 @@ public class Main {
 
 
         for (int i = start; i < N; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
+
                 select[depth] = numbers[i];
                 DFS(depth + 1, i + 1);
-                visited[i] = false;
             }
 
-        }
     }
 
 }
