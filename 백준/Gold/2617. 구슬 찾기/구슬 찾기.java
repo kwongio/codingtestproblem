@@ -37,7 +37,7 @@ public class Main {
             }
         }
         for (int i = 1; i <= N; i++) {
-            if (cnt[i] >= (N + 1) / 2) {
+            if (cnt[i] > (N- 1) / 2) {
                 ans++;
             }
         }
