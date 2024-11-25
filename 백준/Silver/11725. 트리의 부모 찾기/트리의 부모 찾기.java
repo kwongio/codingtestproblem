@@ -1,48 +1,51 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class Main {
-
-    static int N;
-    static List<Integer>[] map;
-    static boolean[] visited;
-
+    static List<Integer>[] tree;
     static int[] answer;
 
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        map = new ArrayList[N + 1];
-        visited = new boolean[N + 1];
-        answer = new int[N + 1];
-        for (int i = 0; i <= N; i++) {
-            map[i] = new ArrayList<>();
+        int N = Integer.parseInt(st.nextToken());
+
+        tree = new ArrayList[N + 1];
+        for (int i = 0; i < N + 1; i++) {
+            tree[i] = new ArrayList<>();
         }
+        answer = new int[N + 1];
+
         for (int i = 0; i < N - 1; i++) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            map[a].add(b);
-            map[b].add(a);
+            tree[a].add(b);
+            tree[b].add(a);
         }
 
-        DFS(1);
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+        boolean[] visit = new boolean[N + 1];
+        q.add(1);
+        visit[1] = true;
+        while (!q.isEmpty()) {
+            Integer now = q.poll();
+            for (Integer next : tree[now]) {
+                if (!visit[next]) {
+                    visit[next] = true;
+                    q.add(next);
+                    answer[next] = now;
+                }
+            }
+        }
+
         for (int i = 2; i <= N; i++) {
             System.out.println(answer[i]);
-        }
-
-    }
-
-    private static void DFS(int v) {
-        for (Integer i : map[v]) {
-            if (!visited[i]) {
-                visited[i] = true;
-                answer[i] = v;
-                DFS(i);
-            }
         }
     }
 }
