@@ -1,3 +1,5 @@
+import static java.lang.System.in;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +13,7 @@ public class Main {
     static int[] answer;
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
 
@@ -43,9 +45,11 @@ public class Main {
                 }
             }
         }
-
+        StringBuilder sb = new StringBuilder();
         for (int i = 2; i <= N; i++) {
-            System.out.println(answer[i]);
+            sb.append(answer[i]).append("\n");
         }
+        System.out.println(sb);
     }
 }
+
