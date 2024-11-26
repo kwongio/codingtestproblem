@@ -21,6 +21,7 @@ class Main {
             ans[i] = 1;
         }
 
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             String command = st.nextToken();
@@ -32,9 +33,10 @@ class Main {
                 union(c, d);
             } else {
                 int a = Integer.parseInt(st.nextToken());
-                System.out.println(ans[find(a)]);
+                sb.append(ans[find(a)]).append("\n");
             }
         }
+        System.out.println(sb);
     }
 
     private static void union(int a, int b) {
