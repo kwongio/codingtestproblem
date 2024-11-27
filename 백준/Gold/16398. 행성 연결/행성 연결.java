@@ -7,13 +7,11 @@ public class Main {
     static int N;
     static List<int[]> list;
     static int[] parent;
-    static int[] cost;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
-        cost = new int[N];
         list = new ArrayList<>();
         parent = new int[N + 1];
         for (int i = 1; i < N + 1; i++) {
@@ -34,10 +32,8 @@ public class Main {
             int a = cur[0];
             int b = cur[1];
             int c = cur[2];
-            int max = Math.max(a, b);
-            int min = Math.min(a, b);
-            if (find(min) != find(max)) {
-                union(min, max);
+            if (find(a) != find(b)) {
+                union(a, b);
                 ans += c;
             }
         }
