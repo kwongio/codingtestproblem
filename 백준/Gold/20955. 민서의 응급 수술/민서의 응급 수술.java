@@ -30,27 +30,20 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            if (find(a) == find(b)) {
-
-                ans++;
-            } else {
-                list[a].add(b);
-                list[b].add(a);
-                union(a, b);
-            }
+            list[a].add(b);
+            list[b].add(a);
         }
         visit = new boolean[N + 1];
-        int connect = 0;
+        int group = 0;
         for (int i = 1; i < N + 1; i++) {
             if (!visit[i]) {
                 BFS(i);
-                connect++;
+                group++;
             }
         }
-        if(connect >= 2){
-            ans += connect - 1;
-        }
-        System.out.println(ans);
+
+        // (M + group - 1) 현재 개수
+        System.out.println((group - 1)  + (M + group - 1) - (N - 1));
     }
 
     private static void BFS(int start) {
@@ -61,27 +54,10 @@ public class Main {
             int now = q.poll();
             for (int next : list[now]) {
                 if (!visit[next]) {
-                    visit[next] =true;
+                    visit[next] = true;
                     q.add(next);
-
                 }
             }
-        }
-    }
-
-    static int find(int a) {
-        if (parent[a] == a) {
-            return a;
-        } else {
-            return parent[a] = find(parent[a]);
-        }
-    }
-
-    static void union(int a, int b) {
-        a = find(a);
-        b = find(b);
-        if (a != b) {
-            parent[b] = a;
         }
     }
 }
