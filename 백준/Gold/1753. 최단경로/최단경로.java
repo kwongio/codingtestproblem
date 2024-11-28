@@ -45,12 +45,15 @@ public class Main {
                 }
             }
         }
+        StringBuilder sb = new StringBuilder();
         for (int i = 1; i < N + 1; i++) {
             if (dis[i] == Integer.MAX_VALUE) {
-                System.out.println("INF");
+                sb.append("INF");
             } else {
-                System.out.println(dis[i]);
+                sb.append(dis[i]);
             }
+            sb.append("\n");
         }
+        System.out.println(sb);
     }
 }
