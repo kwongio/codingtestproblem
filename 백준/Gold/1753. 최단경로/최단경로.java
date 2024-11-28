@@ -4,69 +4,53 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    public static int V, E, K;
-    public static int distance[];
-    public static boolean visited[];
-    public static ArrayList<Edge> list[];
-    public static PriorityQueue<Edge> q = new PriorityQueue<Edge>();
+    static int N, M;
+    static List<int[]>[] list;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        st = new StringTokenizer(br.readLine());
-        V = Integer.parseInt(st.nextToken());
-        E = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(br.readLine());
-        distance = new int[V + 1];
-        visited = new boolean[V + 1];
-        list = new ArrayList[V + 1];
-        for (int i = 1; i <= V; i++)
-            list[i] = new ArrayList<Edge>();
-        for (int i = 0; i <= V; i++) {
-            distance[i] = Integer.MAX_VALUE;
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        list = new ArrayList[N + 1];
+        for (int i = 0; i < N + 1; i++) {
+            list[i] = new ArrayList<>();
         }
-        for (int i = 0; i < E; i++) { // 가중치가 있는 인접 리스트 초기화
+
+        int start = Integer.parseInt(br.readLine());
+        int[] dis = new int[N + 1];
+        Arrays.fill(dis, Integer.MAX_VALUE);
+        for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken());
-            int v = Integer.parseInt(st.nextToken());
-            int w = Integer.parseInt(st.nextToken());
-            list[u].add(new Edge(v, w));
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
+            list[a].add(new int[]{b, c});
         }
-        q.add(new Edge(K, 0)); // K를 시작점으로 설정
-        distance[K] = 0;
+
+        PriorityQueue<int[]> q = new PriorityQueue<>(((o1, o2) -> o1[1] - o2[1]));
+        q.add(new int[]{start, 0});
+        boolean[] visit = new boolean[N + 1];
+        dis[start] = 0;
         while (!q.isEmpty()) {
-            Edge current = q.poll();
-            int c_v = current.vertex;
-            if (visited[c_v]) continue; // 기 방문 노드는 다시 큐에 넣지 않습니다.
-            visited[c_v] = true;
-            for (int i = 0; i < list[c_v].size(); i++) {
-                Edge tmp = list[c_v].get(i);
-                int next = tmp.vertex;
-                int value = tmp.value;
-                if (distance[next] > distance[c_v] + value) { // 최소 거리로 업데이트
-                    distance[next] = value + distance[c_v];
-                    q.add(new Edge(next, distance[next]));
+            int[] now = q.poll();
+            int cur = now[0];
+            int cnt = now[1];
+            if (visit[cur]) continue;
+            visit[cur] = true;
+            for (int[] next : list[cur]) {
+                if (dis[next[0]] > cnt + next[1]) {
+                    dis[next[0]] = cnt + next[1];
+                    q.add(new int[]{next[0], dis[next[0]]});
                 }
             }
         }
-        for (int i = 1; i <= V; i++) { // 거리 배열 출력
-            if (visited[i]) System.out.println(distance[i]);
-            else System.out.println("INF");
+        for (int i = 1; i < N + 1; i++) {
+            if (dis[i] == Integer.MAX_VALUE) {
+                System.out.println("INF");
+            } else {
+                System.out.println(dis[i]);
+            }
         }
     }
 }
-
-class Edge implements Comparable<Edge> {
-    int vertex, value;
-
-    Edge(int vertex, int value) {
-        this.vertex = vertex;
-        this.value = value;
-    }
-
-    public int compareTo(Edge e) {
-        return value - e.value;
-    }
-}
-
-
