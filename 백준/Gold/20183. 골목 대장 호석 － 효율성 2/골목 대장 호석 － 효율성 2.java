@@ -52,7 +52,10 @@ public class Main {
             if (visit[cur]) continue;
             visit[cur] = true;
             for (int[] next : list[cur]) {
-                if (dis[next[0]] > money + next[1] && money + next[1] <= C) {
+                if (dis[next[0]] >= money + next[1] && money + next[1] <= C) {
+                    dis[next[0]] = money + next[1];
+                    q.add(new long[]{next[0], dis[next[0]], Math.max(next[1], value)});
+                } else if (money + next[1] <= C) {
                     dis[next[0]] = money + next[1];
                     q.add(new long[]{next[0], dis[next[0]], Math.max(next[1], value)});
                 }
