@@ -51,17 +51,19 @@ public class Main {
             }
         }
 
+        StringBuilder sb = new StringBuilder();
         ArrayDeque<Integer> path = new ArrayDeque<>();
-        System.out.println(dis[b]);
+        sb.append(dis[b]).append("\n");
         path.add(b);
         while (pre[b] != 0) {
             path.add(pre[b]);
             b = pre[b];
         }
-        System.out.println(path.size());
+        sb.append(path.size()).append("\n");
         while (!path.isEmpty()) {
-            System.out.print(path.pollLast() + " ");
+            sb.append(path.pollLast()).append(" ");
         }
+        System.out.println(sb);
     }
 
 }
