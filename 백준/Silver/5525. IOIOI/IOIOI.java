@@ -5,34 +5,25 @@ import java.util.StringTokenizer;
 
 class Main {
     static int N;
-    static int[] arr;
+    static char[] arr;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(br.readLine());
-
-        StringBuilder answer = new StringBuilder("IOI");
-
-        for (int i = 1; i < N; i++) {
-            answer.append("OI");
-        }
-
-
-        String s = br.readLine();
-
-        int l = 0;
-        int r = N * 2 ;
-        int count = 0;
-        while (r < M) {
-            String str = s.substring(l, r + 1);
-            if (str.contentEquals(answer)) {
-                count++;
+        int[] memo = new int[M];
+        int ans = 0;
+        arr = br.readLine().toCharArray();
+        for (int i = 1; i < M - 1; i++) {
+            if (arr[i] == 'O' && arr[i + 1] == 'I') {
+                memo[i + 1] = memo[i - 1] + 1;
+                if (memo[i + 1] >= N && arr[i - 2 * N + 1] == 'I') {
+                    ans++;
+                }
             }
-            r++;
-            l++;
         }
-        System.out.println(count);
+        System.out.println(ans);
+
     }
 }
