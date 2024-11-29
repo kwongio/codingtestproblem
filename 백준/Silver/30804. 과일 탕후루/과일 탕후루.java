@@ -24,7 +24,7 @@ class Main {
         int e = 0;
         int kind = 0;
         int count = 0;
-        while (s <= e && s < N && e < N) {
+        while (e < N) {
             if (kind <= 2) {
                 if (ss[arr[e]] == 0) {
                     kind++;
