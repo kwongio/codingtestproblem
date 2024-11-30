@@ -8,6 +8,7 @@ class Main {
     static int T;
     static int a, b;
     static char[] cmd = {'D', 'S', 'L', 'R'};
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,31 +26,33 @@ class Main {
                 Node now = q.poll();
                 int num = now.num;
                 String command = now.cmd;
-                if(num == b){
-                    System.out.println(command);
+                if (num == b) {
+                    sb.append(command).append("\n");
                     break;
                 }
-                for (int j = 0; j < 4; j++) {
-                    int d = (num * 2) % 10000;
-                    int s = num == 0 ? 9999 : num - 1;
-                    int l = (num % 1000 * 10) + num / 1000;
-                    int r = (num % 10 * 1000) + num / 10;
-                    if (!visit[d] && cmd[j] == 'D') {
-                        visit[d] = true;
-                        q.add(new Node(d, command + cmd[j]));
-                    } else if (!visit[s] && cmd[j] == 'S') {
-                        visit[s] = true;
-                        q.add(new Node(s, command + cmd[j]));
-                    } else if (!visit[l] && cmd[j] == 'L') {
-                        visit[l] = true;
-                        q.add(new Node(l, command + cmd[j]));
-                    } else if (!visit[r] && cmd[j] == 'R') {
-                        visit[r] = true;
-                        q.add(new Node(r, command + cmd[j]));
-                    }
+                int d = (num * 2) % 10000;
+                int s = num == 0 ? 9999 : num - 1;
+                int l = (num % 1000 * 10) + num / 1000;
+                int r = (num % 10 * 1000) + num / 10;
+                if (!visit[d]) {
+                    visit[d] = true;
+                    q.add(new Node(d, command + 'D'));
+                }
+                if (!visit[s]) {
+                    visit[s] = true;
+                    q.add(new Node(s, command + 'S'));
+                }
+                if (!visit[l]) {
+                    visit[l] = true;
+                    q.add(new Node(l, command + 'L'));
+                }
+                if (!visit[r]) {
+                    visit[r] = true;
+                    q.add(new Node(r, command + 'R'));
                 }
             }
         }
+        System.out.println(sb);
     }
 
     static class Node {
