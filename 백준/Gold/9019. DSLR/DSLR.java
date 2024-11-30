@@ -26,27 +26,40 @@ class Main {
                 Node now = q.poll();
                 int num = now.num;
                 String command = now.cmd;
-                if (num == b) {
-                    sb.append(command).append("\n");
-                    break;
-                }
                 int d = (num * 2) % 10000;
                 int s = num == 0 ? 9999 : num - 1;
                 int l = (num % 1000 * 10) + num / 1000;
                 int r = (num % 10 * 1000) + num / 10;
                 if (!visit[d]) {
+                    if(d == b){
+                        sb.append(command).append('D').append("\n");
+                        break;
+                    }
                     visit[d] = true;
                     q.add(new Node(d, command + 'D'));
+
                 }
                 if (!visit[s]) {
+                    if(s == b){
+                        sb.append(command).append('S').append("\n");
+                        break;
+                    }
                     visit[s] = true;
                     q.add(new Node(s, command + 'S'));
                 }
                 if (!visit[l]) {
+                    if(l == b){
+                        sb.append(command).append('L').append("\n");
+                        break;
+                    }
                     visit[l] = true;
                     q.add(new Node(l, command + 'L'));
                 }
                 if (!visit[r]) {
+                    if(r == b){
+                        sb.append(command).append('R').append("\n");
+                        break;
+                    }
                     visit[r] = true;
                     q.add(new Node(r, command + 'R'));
                 }
