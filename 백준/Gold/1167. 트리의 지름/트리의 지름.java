@@ -1,76 +1,80 @@
-import java.util.*;
+import static java.lang.System.in;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    static int N, M;
-
-    static boolean[] visited;
+    static List<int[]>[] list;
     static int[] distance;
-    static List<Edge>[] list;
+    static boolean[] visit;
+    static int N;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
         list = new ArrayList[N + 1];
-        visited = new boolean[N + 1];
-        distance = new int[N + 1];
-        for (int i = 1; i <= N; i++) {
-            list[i] = new ArrayList<Edge>();
+        for (int i = 0; i < N + 1; i++) {
+            list[i] = new ArrayList<>();
         }
 
         for (int i = 0; i < N; i++) {
-            int S = sc.nextInt();
-            while (true) {
-                int E = sc.nextInt();
-                if (E == -1) {
-                    break;
-                }
-                int V = sc.nextInt();
-                list[S].add(new Edge(E, V));
+            st = new StringTokenizer(br.readLine());
+            int num = Integer.parseInt(st.nextToken());
+            int a = Integer.parseInt(st.nextToken());
+            while (a != -1) {
+                int b = Integer.parseInt(st.nextToken());
+                list[num].add(new int[]{a, b});
+                a = Integer.parseInt(st.nextToken());
             }
         }
-        BFS(1);
 
-        int Max= 1;
-        for (int i = 2; i <= N; i++) {
-            if (distance[Max] < distance[i]) {
-                Max = i;
-            }
+        int idx = BFS(1);
+        int bfs = BFS(idx);
+        System.out.println(distance[bfs]);
+    }
 
-        }
-        visited = new boolean[N + 1];
+    private static int BFS(int start) {
+        ArrayDeque<int[]> q = new ArrayDeque<>();
         distance = new int[N + 1];
-        BFS(Max);
-        Arrays.sort(distance);
-        System.out.println(distance[N]);
+        visit = new boolean[N + 1];
+        Arrays.fill(distance, Integer.MAX_VALUE);
 
-    }
+        q.add(new int[]{start, 0});
+        distance[start] = 0;
 
-    private static void BFS(int index) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(index);
-        visited[index] = true;
-        while (!queue.isEmpty()) {
-            int now_node = queue.poll();
-            for (Edge edge : list[now_node]) {
-                int e = edge.e;
-                int value = edge.value;
-                if (!visited[e]) {
-                    visited[e] = true;
-                    queue.add(e);
-                    distance[e] = distance[now_node] + value;
+        while (!q.isEmpty()) {
+            int[] now = q.poll();
+            int cur = now[0];
+            int cost = now[1];
+            if (visit[cur]) {
+                continue;
+            }
+            visit[cur] = true;
+            for (int[] next : list[cur]) {
+                if (distance[next[0]] > next[1] + distance[cur]) {
+                    distance[next[0]] = next[1] + distance[cur];
+                    q.add(new int[]{next[0], distance[next[0]]});
                 }
             }
         }
-    }
-}
-
-class Edge {
-    int e;
-    int value;
-
-    public Edge(int e, int value) {
-        this.e = e;
-        this.value = value;
+        int max = -1;
+        int idx = -1;
+        for (int i = 1; i < N + 1; i++) {
+            if (distance[i] != Integer.MAX_VALUE) {
+                if (max < distance[i]) {
+                    max = distance[i];
+                    idx = i;
+                }
+            }
+        }
+        return idx;
     }
 }
