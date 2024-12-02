@@ -15,27 +15,12 @@ class Main {
             return;
         }
         ans = 99;
-        Loop: for (int i = 100; i <= T; i++) {
-            int num = i;
-            int pre = num % 10;
-            num /= 10;
-
-            int cur = num % 10;
-            num /= 10;
-            int diff = pre - cur;
-
-            pre = cur;
-
-            while (num != 0) {
-                cur = num % 10;
-                num /= 10;
-
-                if (diff != pre - cur) {
-                    continue Loop;
-                }
-                pre = cur;
-            }
-            ans++;
+        for (int i = 100; i <= T; i++) {
+            int a = i / 100;
+            int b = (i / 10) % 10;
+            int c = i % 10;
+            if(a - b ==  b - c)
+                ans++;
         }
         System.out.println(ans);
     }
