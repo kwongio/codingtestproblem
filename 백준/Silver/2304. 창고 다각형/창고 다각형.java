@@ -3,10 +3,7 @@ import static java.lang.System.in;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -14,40 +11,39 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
-        List<int[]> list = new ArrayList<>();
         int maxH = 0;
+        int maxL = 0;
+        int maxWidth = 0;
+
+        int[] arr = new int[1001];
+
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             int l = Integer.parseInt(st.nextToken());
             int h = Integer.parseInt(st.nextToken());
-            list.add(new int[]{l, h});
-            maxH = Math.max(maxH, h);
-        }
-        Collections.sort(list, Comparator.comparing(o -> o[0]));
-
-        int sum = 0;
-        for (int i = 1; i <= maxH; i++) {
-            int s = 0;
-            int e = 0;
-
-            for (int[] cur : list) {
-                int l = cur[0];
-                int h = cur[1];
-                if (i <= h) {
-                    s = l;
-                    break;
-                }
+            arr[l] = h;
+            if (maxH <= h) {
+                maxH = h;
+                maxL = l;
             }
-
-            for (int[] cur : list) {
-                int l = cur[0];
-                int h = cur[1];
-                if (i <= h) {
-                    e = l + 1;
-                }
-            }
-            sum += e - s;
+            maxWidth = Math.max(l, maxWidth);
         }
-        System.out.println(sum);
+
+        int[] frontPrefix = new int[maxWidth + 2];
+        int[] backPrefix = new int[maxWidth + 2];
+
+        int h = 0;
+        for (int i = 0; i <= maxL; i++) {
+            h = Math.max(h, arr[i]);
+            frontPrefix[i + 1] = frontPrefix[i] + h;
+        }
+
+        h = 0;
+        for (int i = maxWidth; i > maxL; i--) {
+            h = Math.max(h, arr[i]);
+            backPrefix[i] = backPrefix[i + 1] + h;
+        }
+
+        System.out.println(Arrays.stream(backPrefix).max().getAsInt() + Arrays.stream(frontPrefix).max().getAsInt());
     }
 }
