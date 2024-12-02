@@ -1,58 +1,60 @@
+import static java.lang.System.in;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int[] dx = { -1, 0, 1, 0 };
-    static int[] dy = { 0, 1, 0, -1 };
     static int N;
-    static int[][] map; // 대나무 숲
-    static int[][] d;
+    static int[][] arr;
+    static int[] dx = {1, -1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
+    static boolean[][] visit;
+    static int max = Integer.MIN_VALUE;
 
-    public static void main(String[] args) throws NumberFormatException, IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        N = Integer.parseInt(br.readLine());
+    static int[][] dp;
 
-        map = new int[N][N];
-        d = new int[N][N];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        arr = new int[N][N];
+        dp = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            Arrays.fill(dp[i], -1);
+
+        }
+        visit = new boolean[N][N];
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
+                arr[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        int ans = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                ans = Math.max(ans, DFS(i, j));
+                max = Math.max(DFS(i, j), max);
             }
         }
-
-        System.out.println(ans);
+        System.out.println(max);
     }
 
-    public static int DFS(int x, int y) {
-        if (d[x][y] != 0) {
-            return d[x][y];
+    private static int DFS(int x, int y) {
+        if (dp[x][y] != -1) {
+            return dp[x][y];
         }
-        d[x][y] = 1;
-        int nx, ny;
+        dp[x][y] = 1;
+
         for (int i = 0; i < 4; i++) {
-            nx = x + dx[i];
-            ny = y + dy[i];
-
-            if (nx < 0 || ny < 0 || nx >= N || ny >= N) {
-                continue;
-            }
-
-            if (map[x][y] < map[nx][ny]) {
-                d[x][y] = Math.max(d[x][y], DFS(nx, ny) + 1);
+            int nx = dx[i] + x;
+            int ny = dy[i] + y;
+            if (nx >= 0 && nx < N && ny >= 0 && ny < N && arr[x][y] < arr[nx][ny]) {
+                dp[x][y] = Math.max(dp[x][y], DFS(nx, ny) + 1);
             }
         }
-        return d[x][y];
+        return dp[x][y];
     }
-
 }
