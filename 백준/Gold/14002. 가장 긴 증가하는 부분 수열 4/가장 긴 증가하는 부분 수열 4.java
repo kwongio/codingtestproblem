@@ -1,47 +1,48 @@
-import java.util.*;
-
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Stack;
+import java.util.StringTokenizer;
 
 public class Main {
+    static int[] dp;
 
-    public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
-
-        int N = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
         int[] arr = new int[N];
-        int[] dp = new int[N];
 
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            arr[i] = sc.nextInt();
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
+        dp = new int[N + 1];
 
-        // dp
+        Arrays.fill(dp, 1);
         for (int i = 0; i < N; i++) {
-            dp[i] = 1;
             for (int j = 0; j < i; j++) {
-                if (arr[j] < arr[i] && dp[i] < dp[j] + 1) {
-                    dp[i] = dp[j] + 1;
+                if (arr[i] > arr[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
                 }
             }
         }
-
-        List<Integer> list = new ArrayList<>();
-        int count = 1;
         int max = Arrays.stream(dp).max().getAsInt();
         System.out.println(max);
 
+        Stack<Integer> stack = new Stack<>();
         for (int i = N - 1; i >= 0; i--) {
-            if (dp[i] == max) {
-                list.add(arr[i]);
+            if (max == dp[i]) {
+                stack.push(arr[i]);
                 max--;
             }
         }
-        Collections.reverse(list);
-        list.forEach(v -> System.out.print(v + " "));
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop()).append(" ");
+        }
+        System.out.println(sb);
 
     }
-
-
 }
