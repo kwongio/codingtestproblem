@@ -1,55 +1,40 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 
 public class Main {
-
-    static int N;
-
-
     public static void main(String[] args) throws IOException {
+        int start = 1;
+
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        Queue<Integer> q = new LinkedList<>();
-        int count = 1;
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            q.add(Integer.parseInt(st.nextToken()));
-        }
-        Stack<Integer> s = new Stack<>();
+        int N = Integer.parseInt(br.readLine());
 
-        while (!q.isEmpty()) {
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+        String[] s = br.readLine().split(" ");
+        for (int j = 0; j < N; j++) {
+            int num = Integer.parseInt(s[j]);
 
-            if (count == q.peek()) {
-                q.poll();
-                count++;
-            } else {
-                if (!s.isEmpty() && s.peek() == count) {
-                    count++;
-                    s.pop();
-                } else {
-                    s.push(q.poll());
-                }
+            while (!q.isEmpty() && q.peekFirst() == start) {
+                start++;
+                q.pollFirst();
             }
-        }
-        while (!s.isEmpty()) {
-            if (s.peek() == count) {
-                s.pop();
-                count++;
+            if (num != start) {
+                q.addFirst(num);
             }else{
-                System.out.println("Sad");
-                return;
+                start++;
             }
-
         }
+        while(!q.isEmpty() && q.peekFirst() == start){
+            start++;
+            q.pollFirst();
+        }
+        if (q.isEmpty() ) {
+            System.out.println("Nice");
+        } else {
 
-
-        bw.write("Nice");
-
-        bw.flush();
-
-
+            System.out.println("Sad");
+        }
     }
-
 }
