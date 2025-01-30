@@ -30,10 +30,9 @@ public class Main {
     }
 
     private static void DFS(int depth, int count) {
+        if (count > N / 2) return;
         if (depth == N) {
-            if (count == 0) {
-                return;
-            }
+            if (count == 0) return;
             int a = 0;
             int b = 0;
             for (int i = 0; i < N; i++) {
@@ -50,9 +49,9 @@ public class Main {
                 System.out.println(0);
                 System.exit(0);
             }
-
             return;
         }
+
 
         visit[depth] = true;
         DFS(depth + 1, count + 1);
