@@ -1,22 +1,25 @@
 import java.util.*;
 class Solution {
     public long solution(int n, int[] works) {
+        long answer = 0;
+        
+        
         PriorityQueue<Integer> q = new PriorityQueue<>(Collections.reverseOrder());
-         long answer = 0;
-        for(int w : works){
-            q.add(w);
+        for(int i =0 ; i < works.length; i++){
+            q.add(works[i]);
         }
-        for(int i = 0; i < n; i++){
-            if(!q.isEmpty()){
-                int v = q.poll() - 1;
-                if(v > 0) q.add(v);
+        for(int i = 0; i < n ; i++){
+            q.add(q.poll() - 1);
+        }
+        
+        while(!q.isEmpty()){
+            int v= q.poll();
+            if(v >= 1){
+                answer += Math.pow(v, 2);
             }
         }
-        while(!q.isEmpty()){
-            int num = q.poll() ;
-            answer+=num*num;
-        }
-       
+        
+        
         return answer;
     }
 }
