@@ -54,7 +54,6 @@ public class Main {
 
     private static void DFS(int depth, int p, int q, int sum, int cal, int[] num) {
         if (depth == N) {
-            max = Math.max(max, cal);
             max = Math.max(max, cal * sum);
             return;
         }
