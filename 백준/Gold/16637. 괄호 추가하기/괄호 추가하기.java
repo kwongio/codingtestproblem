@@ -1,54 +1,60 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.StringTokenizer;
+
+import static java.lang.System.in;
 
 public class Main {
-
     static int N;
-    static int max = Integer.MIN_VALUE;
-    static List<Integer> num = new ArrayList<>();
-    static List<Character> op = new ArrayList<>();
+    static boolean[] visit;
+    static long[] num;
+    static char[] oper;
+    static long max = Integer.MIN_VALUE;
 
-
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
-        String str = br.readLine();
+        visit = new boolean[N / 2];
+        num = new long[N / 2 + N % 2];
+        oper = new char[N / 2];
+
+        char[] c = br.readLine().toCharArray();
+
+        int operIdx = 0;
+        int numIdx = 0;
         for (int i = 0; i < N; i += 2) {
-            num.add(str.charAt(i) - '0');
+            num[numIdx++] = c[i] - '0';
         }
         for (int i = 1; i < N; i += 2) {
-            op.add(str.charAt(i));
+            oper[operIdx++] = c[i];
         }
-//        System.out.println(num);
-//        System.out.println(op);
-
-        DFS(0, num.get(0));
+        DFS(0, num[0]);
         System.out.println(max);
     }
 
-    private static void DFS(int depth, int sum) {
-        if (depth == num.size() - 1) {
-            max = Math.max(sum, max);
+    private static void DFS(int depth, long sum) {
+        if (depth == num.length - 1) {
+            max = Math.max(max, sum);
             return;
         }
 
-        DFS(depth + 1, cal(sum, num.get(depth + 1), op.get(depth)));
-        if (depth + 2 <= num.size() - 1) {
-            int result = cal(num.get(depth + 1), num.get(depth + 2), op.get(depth + 1));
-            DFS(depth + 2, cal(sum, result, op.get(depth)));
+        DFS(depth + 1, cal(sum, num[depth + 1], oper[depth]));
+        if (depth + 2 <= num.length - 1) {
+            long ret = cal(num[depth + 1], num[depth + 2], oper[depth + 1]);
+            DFS(depth + 2, cal(sum, ret, oper[depth]));
         }
     }
 
-    public static int cal(int a, int b, char op) {
-        if (op == '+') {
-            return a + b;
-        } else if (op == '-') {
-            return a - b;
-        } else if (op == '*') {
-            return a * b;
+    static long cal(long n1, long n2, char c) {
+        if (c == '*') {
+            return n1 * n2;
+        } else if (c == '-') {
+            return n1 - n2;
+        } else if (c == '+') {
+            return n1 + n2;
         }
-        return 0;
+        throw new RuntimeException();
     }
 }
