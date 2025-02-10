@@ -27,26 +27,20 @@ public class Main {
         for (int i = 0; i <= 25; i++) {
             ans |= (1 << i);
         }
-        DFS(0, new ArrayList<>());
+        DFS(0, 0);
         System.out.println(cnt);
     }
 
-    private static void DFS(int depth, List<Integer> select) {
+    private static void DFS(int depth, int a) {
         if (depth == N) {
-            int a =0 ;
-            for (Integer i : select) {
-                a |= i;
-            }
             if (a == ans) {
                 cnt++;
             }
             return;
         }
 
-        select.add(list.get(depth));
-        DFS(depth + 1, select);
-        select.remove(list.get(depth));
-        DFS(depth + 1, select);
+        DFS(depth + 1, a);
+        DFS(depth + 1, a | list.get(depth));
     }
 }
 
