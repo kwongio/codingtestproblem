@@ -104,7 +104,7 @@ class Solution {
                 int[] next= ctrlMove(x, y, i, board, visit, image);
                 int nx= next[0];
                 int ny = next[1];
-                // if(nx == x && ny == y) continue;
+                if(nx == x && ny == y) continue;
                 if(isRange(nx ,ny) && !visit[nx][ny]){
                     visit[nx][ny] = true;
                     q.add(new Node(nx, ny, board[nx][ny], cnt + 1, find, image, visit));
@@ -189,7 +189,7 @@ class Solution {
             int[] next= ctrlMove(x, y, i, board, visit ,image);
             int nx= next[0];
             int ny = next[1];
-            // if(nx == x && ny == y) continue;
+            if(nx == x && ny == y) continue;
             if(isRange(nx, ny) && !visit[nx][ny]){
                 visit[nx][ny] = true;
                 DFS(nx, ny, rx, ry, card, visit, board, cnt+ 1, image);
