@@ -31,13 +31,10 @@ public class Main {
             if (q.isEmpty()) {
                 q.add(v[1]);
             } else {
-                if (v[0] < q.peek()) {
-                    q.add(v[1]);
-                }else{
+                if (q.peek() <= v[0]) {
                     q.poll();
-                    q.add(v[1]);
                 }
-
+                q.add(v[1]);
             }
         }
         System.out.println(q.size());
