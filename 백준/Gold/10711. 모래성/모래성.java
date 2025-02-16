@@ -21,7 +21,7 @@ public class Main {
         W = Integer.parseInt(st.nextToken());
         board = new int[H][W];
 
-        List<int[]> list = new ArrayList<>();
+        ArrayDeque<int[]> list = new ArrayDeque<>();
         for (int i = 0; i < H; i++) {
             String input = br.readLine();
             for (int j = 0; j < W; j++) {
@@ -35,16 +35,11 @@ public class Main {
             }
         }
         visit = new boolean[H][W];
-        List<int[]> next = new ArrayList<>();
-
         int ans = 0;
         while (!list.isEmpty()) {
-//            for (int i = 0; i < H; i++) {
-//                System.out.println(Arrays.toString(board[i]));
-//            }
-//            System.out.println();
-            //다음 점 찾기
-            for (int[] now : list) {
+            int size = list.size();
+            for (int s = 0; s < size; s++) {
+                int[] now = list.poll();
                 int x = now[0];
                 int y = now[1];
                 visit[x][y] = true;
@@ -55,22 +50,19 @@ public class Main {
                         int count = getCount(nx, ny);
                         if (count >= board[nx][ny]) {
                             visit[nx][ny] = true;
-                            next.add(new int[]{nx, ny});
+                            list.add(new int[]{nx, ny});
                         }
                     }
                 }
             }
-            if (!next.isEmpty()) {
+            if (!list.isEmpty()) {
                 ans++;
             }
-            list.clear();
-            for (int[] now : next) {
+            for (int[] now : list) {
                 int x = now[0];
                 int y = now[1];
-                list.add(new int[]{x, y});
                 board[x][y] = 0;
             }
-            next.clear();
         }
         System.out.println(ans);
 
@@ -78,15 +70,15 @@ public class Main {
     }
 
     private static int getCount(int x, int y) {
-        int cnt = 0;
+        int count = 0;
         for (int i = 0; i < 8; i++) {
             int nx = dx[i] + x;
             int ny = dy[i] + y;
             if (isRange(nx, ny) && board[nx][ny] == 0) {
-                cnt++;
+                count++;
             }
         }
-        return cnt;
+        return count;
     }
 
 
