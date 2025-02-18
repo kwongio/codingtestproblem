@@ -1,75 +1,77 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
-
-import static java.lang.System.in;
 
 public class Main {
     static int N;
+    static int[] ans;
+    static boolean[] v;
     static List<Integer>[] list;
-    static int[] dis;
-    static boolean[] visit;
-    static boolean[] cycle;
-
+    static Queue<Integer> q = new ArrayDeque<>();
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        list = new List[N + 1];
-        visit = new boolean[N + 1];
-        cycle = new boolean[N + 1];
-        dis = new int[N + 1];
-        for (int i = 1; i < N + 1; i++) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+
+        ans = new int[N+1];
+        list = new ArrayList[N+1];
+
+        Arrays.fill(ans, -1);
+
+        for(int i = 1 ; i <= N ; i ++)
             list[i] = new ArrayList<>();
-        }
-        for (int i = 0; i < N; i++) {
+
+        for(int i = 0 ; i < N ; i ++){
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
+
             list[a].add(b);
             list[b].add(a);
         }
-        for (int i = 1; i < N + 1; i++) {
-            visit = new boolean[N + 1];
-            DFS(i, i, 1);
+
+        // 사이클 체크
+        for(int i = 1 ; i <= N ; i ++){
+            v = new boolean[N+1];
+            cycleCheck(i, 1, i);
         }
-        for (int i = 1; i < N + 1; i++) {
-            if (cycle[i]) continue;
-            ArrayDeque<int[]> q = new ArrayDeque<>();
-            boolean[] vis = new boolean[N + 1];
-            q.add(new int[]{i, 0});
-            vis[i] = true;
-            while (!q.isEmpty()) {
-                int[] now = q.poll();
-                if (cycle[now[0]]) {
-                    dis[i] = now[1];
-                    break;
-                }
-                for (Integer next : list[now[0]]) {
-                    if (!vis[next]) {
-                        vis[next] = true;
-                        q.add(new int[]{next, now[1] + 1});
-                    }
-                }
-            }
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 1; i < N + 1; i++) {
-            sb.append(dis[i]).append(" ");
-        }
-        System.out.println(sb);
+
+        bfs();
+
+        for(int i = 1 ; i <= N ; i ++)
+            sb.append(ans[i]).append(" ");
+
+        System.out.print(sb);
     }
 
-    private static void DFS(int cur, int start, int depth) {
-        visit[cur] = true;
-        for (int next : list[cur]) {
-            if (!visit[next]) {
-                DFS(next, start, depth + 1);
-            } else {
-                if (next == start && depth >= 3) {
-                    cycle[start] = true;
-                    return;
+    private static void cycleCheck(int cur, int cnt, int start) {
+        // 방문
+        v[cur] = true;
+
+        for(int next: list[cur]){
+            // 다음노드를 방문하지 않았다면
+            if(!v[next]) cycleCheck(next, cnt+1, start);
+                // 다음노드를 방문했다면
+            else if(next == start && cnt >= 3){
+                // 사이클 표시
+                ans[next] = 0;
+                q.offer(next);
+                return;
+            }
+        }
+    }
+
+    private static void bfs() {
+
+        while(!q.isEmpty()){
+            int cur = q.poll();
+
+            for(int next: list[cur]){
+                // 사이클이 아닌 노드라면
+                if(ans[next] == -1){
+                    ans[next] = ans[cur] + 1;
+                    q.offer(next);
                 }
             }
         }
