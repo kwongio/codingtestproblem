@@ -1,24 +1,21 @@
 import java.util.*;
 
+
 class Solution {
     public int solution(int[] A, int[] B) {
-        int answer = 0;
-        
         Arrays.sort(A);
         Arrays.sort(B);
-        int a = 0;
-        int b = 0;
-        for(int i = 0; i < A.length;i++){
-            if(A[a] == B[b]){
-                b++;
-            }else if(A[a] > B[b]){
-                b++;
-            }else{
-                a++;
-                b++;
-                answer++;
+        
+        int s =B.length - 1;
+        int ans =0;
+        
+        for(int i =A.length - 1 ; i >= 0; i--){
+            if(s < B.length && A[i] < B[s]){ // 처리할 수
+                ans++;
+                s--;
             }
+            
         }
-        return answer;
+        return ans;
     }
 }
