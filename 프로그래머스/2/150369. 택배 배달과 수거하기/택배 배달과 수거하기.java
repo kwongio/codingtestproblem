@@ -3,17 +3,19 @@ class Solution {
         long answer = 0;
         int d = 0;
         int p = 0;
-        for(int i=n-1; i>=0; i--){
-            d -= deliveries[i];
+        for (int i = n - 1; i >=0; i--) { 
+            int cnt = 0;
+            d -= deliveries[i]; 
             p -= pickups[i];
-            
-            while(d < 0 || p < 0){
+            while (d < 0 || p < 0) {
                 d += cap;
                 p += cap;
-                answer += (i+1)*2;
+                cnt++;
             }
+
+            answer += (i + 1) * 2 * cnt; 
         }
-        
+
         return answer;
     }
 }
