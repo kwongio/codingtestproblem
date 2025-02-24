@@ -1,26 +1,30 @@
 import java.util.*;
+
 class Solution {
-    public List solution(int[] progresses, int[] speeds) {
-        List<Integer> answer=  new ArrayList<>();
-        Queue<Integer> q = new LinkedList<>();
-        for(int i =0; i < progresses.length; i++){
-            if((100 -progresses[i])% speeds[i] == 0){
-                q.add((100 - progresses[i])/speeds[i]);
+    public List<Integer> solution(int[] p, int[] s) {
+        
+        List<Integer> list = new ArrayList<>();
+        for(int i =0; i < p.length; i++){
+            int num = (100 -p[i])%s[i] != 0 ? 1 : 0;
+            list.add((100 - p[i])/s[i] + num);
+        }
+        
+        int a = list.get(0);
+        int cnt = 0;
+        List<Integer> ans = new ArrayList<>();
+        for(int v : list){
+            if(a >= v){
+                cnt++;
             }else{
-                q.add((100 - progresses[i])/speeds[i]  + 1);
+                ans.add(cnt);
+                cnt =1;
+                a = v;
             }
         }
-        
-        while(!q.isEmpty()){
-            int count = 1;
-            int value = q.poll();
-            while(!q.isEmpty() && q.peek() <= value){
-                q.poll();
-                count++;
-            }
-            answer.add(count);
+        if(cnt != 0){
+            ans.add(cnt);
         }
         
-        return answer;
+        return ans;
     }
 }
