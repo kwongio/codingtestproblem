@@ -1,39 +1,46 @@
 import java.util.*;
 class Solution {
-    int[][] arr;
+    //두 개의 그룹으로 나눠야함
+    List<Integer>[] list;
+    int N ;
+    int min = Integer.MAX_VALUE;
     public int solution(int n, int[][] wires) {
-        arr = new int[n + 1][n + 1];
-        int answer = Integer.MAX_VALUE;
-        for(int i = 0 ; i < wires.length; i++){
-            arr[wires[i][0]][wires[i][1]] = 1;
-            arr[wires[i][1]][wires[i][0]] = 1;
+        N = n;
+        list = new List[n + 1];
+        for(int i =0 ; i < n  + 1; i++){
+            list[i] = new ArrayList<>();
+        }
+        for(int[] w : wires){
+            int a = w[0];
+            int b = w[1];
+            list[a].add(b);
+            list[b].add(a);
         }
         
-        for(int i = 0 ; i < wires.length ; i++){
-            arr[wires[i][0]][wires[i][1]] = 0;
-            arr[wires[i][1]][wires[i][0]] = 0;
-            answer = Math.min(answer, bfs(wires[i][0], n));
-            arr[wires[i][0]][wires[i][1]] = 1;
-            arr[wires[i][1]][wires[i][0]] = 1;
+        for(int i =0 ; i < wires.length ;i++){
+            int a = wires[i][0];
+            int b = wires[i][1];
+            int cnt1 = BFS(a, b);
+            int cnt2 = BFS(b, a);
+            min = Math.min(Math.abs(cnt1-cnt2), min);
         }
-        return answer;
+        return min;
     }
-    int bfs(int start, int n){
+    public int BFS(int a, int b){
+        boolean[] visit=  new boolean[N + 1];
+        ArrayDeque<Integer> q= new ArrayDeque<>();
+        q.add(a);
+        visit[a] = true;
         int cnt = 1;
-        boolean[] visited = new boolean[n + 1];
-        Queue<Integer> q = new ArrayDeque<>();
-        q.add(start);
-        visited[start] = true;
         while(!q.isEmpty()){
             int now = q.poll();
-            for(int i = 1; i < n + 1; i++){
-                if(arr[now][i]  == 1 && !visited[i]){
-                    visited[i] = true;
-                    q.add(i);
-                    cnt++;
-                }
+            for(int next : list[now]){
+                if(visit[next] || next == b) continue;
+                visit[next]= true;
+                q.add(next);
+                cnt++;
             }
         }
-        return Math.abs(cnt-(n - cnt));
+        return cnt;
     }
 }
