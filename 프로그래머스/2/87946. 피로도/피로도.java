@@ -27,9 +27,9 @@ class Solution {
             if(k >= min && k - down >=0){
                 DFS(depth+ 1, k - down, cnt + 1);
             }
+            DFS(depth + 1, k, cnt);
             visit[i] = false;
         }
-        DFS(depth + 1, k, cnt);
         
     }
 }
