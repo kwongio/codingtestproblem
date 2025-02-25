@@ -4,8 +4,11 @@ class Solution {
     List<Integer>[] list;
     int N ;
     int min = Integer.MAX_VALUE;
+    int answer;
+    boolean[] visit;
     public int solution(int n, int[][] wires) {
         N = n;
+        answer = n - 1;
         list = new List[n + 1];
         for(int i =0 ; i < n  + 1; i++){
             list[i] = new ArrayList<>();
@@ -16,31 +19,21 @@ class Solution {
             list[a].add(b);
             list[b].add(a);
         }
-        
-        for(int i =0 ; i < wires.length ;i++){
-            int a = wires[i][0];
-            int b = wires[i][1];
-            int cnt1 = BFS(a, b);
-            int cnt2 = BFS(b, a);
-            min = Math.min(Math.abs(cnt1-cnt2), min);
-        }
-        return min;
+        visit=  new boolean[N + 1];
+        DFS(1);
+        return answer;
     }
-    public int BFS(int a, int b){
-        boolean[] visit=  new boolean[N + 1];
-        ArrayDeque<Integer> q= new ArrayDeque<>();
-        q.add(a);
-        visit[a] = true;
-        int cnt = 1;
-        while(!q.isEmpty()){
-            int now = q.poll();
-            for(int next : list[now]){
-                if(visit[next] || next == b) continue;
-                visit[next]= true;
-                q.add(next);
-                cnt++;
+    
+    public int DFS(int now){
+        visit[now] = true;
+        int sum =0 ;
+        for(int next : list[now]){
+            if(!visit[next]){
+                int cnt = DFS(next);
+                answer = Math.min(answer, Math.abs(N - cnt * 2));
+                sum +=cnt;
             }
         }
-        return cnt;
+        return sum + 1;
     }
 }
