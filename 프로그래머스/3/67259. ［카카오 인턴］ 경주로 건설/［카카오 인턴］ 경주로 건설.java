@@ -2,14 +2,19 @@ import java.util.*;
 
 class Solution {
     int N;
-    int[][][] visit;
+    int[][][] dis;
     int min = Integer.MAX_VALUE;
     int[] dx= { -1,0,1,0};
     int[] dy = {0,1,0,-1};
     public int solution(int[][] board) {
         N = board.length;
-        visit = new int[4][N][N];
+        dis = new int[4][N][N];
         ArrayDeque<int[]> q = new ArrayDeque<>();
+        for(int i =0 ; i < 4; i++){
+            for(int j = 0; j < N; j++){
+                Arrays.fill(dis[i][j], Integer.MAX_VALUE);
+            }
+        }
         q.add(new int[]{0,0,0,0});
         
         while(!q.isEmpty()){
@@ -28,15 +33,15 @@ class Solution {
                 int ny = dy[i] + y;
                 if(nx >=0 && nx < N && ny >=0 && ny < N  && board[nx][ny] ==0 ){
                     if(i == d || sum == 0){
-                        if(visit[i][nx][ny] > sum + 100 || visit[i][nx][ny] == 0){
+                        if(dis[i][nx][ny] > sum + 100 ){
                             q.add(new int[]{nx, ny, sum + 100, i});
-                            visit[i][nx][ny] = sum + 100;
+                            dis[i][nx][ny] = sum + 100;
                         }
 
                     }else{
-                        if(visit[i][nx][ny] > sum + 600  || visit[i][nx][ny] == 0){
+                        if(dis[i][nx][ny] > sum + 600){
                             q.add(new int[]{nx, ny, sum + 600, i});
-                            visit[i][nx][ny] = sum + 600;
+                            dis[i][nx][ny] = sum + 600;
                         }
                     }
                 }
